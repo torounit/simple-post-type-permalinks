@@ -1,0 +1,5 @@
+node_modules
+release
+npm-debug.log
+composer.phar
+vendor
