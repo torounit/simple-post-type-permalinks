@@ -107,6 +107,36 @@ class SPTP_Admin {
 	<?php
 	}
 
+	/**
+	 *
+	 * radio button.
+	 *
+	 * @param string $name
+	 * @param mixed $current
+	 * @param array $values
+	 */
+	public function input_rows( $name, $current, $values, $with_front ) {
+		foreach ( $values as $value ):
+			$permalink = str_replace( array( '%postname%', '%post_id%' ), array( 'sample-post', '123' ), $value );
+			?>
+
+			<label>
+				<input type="radio" name="<?= esc_attr( $name ); ?>" value="<?= esc_attr( ($value) ? '/'.$value : '' ) ?>"
+					<?php checked( $current, $value ); ?> />
+				<?php
+				if ( $value ):?>
+					<code><?= home_url().$this->create_permastruct( $permalink, $with_front ); ?></code>
+				<?php
+				else: ?>
+					Default.
+				<?php
+				endif;?>
+
+			</label>
+			<br/>
+		<?php
+		endforeach;
+	}
 
 	/**
 	 *
@@ -146,36 +176,7 @@ class SPTP_Admin {
 	}
 
 
-	/**
-	 *
-	 * radio button.
-	 *
-	 * @param string $name
-	 * @param mixed $current
-	 * @param array $values
-	 */
-	public function input_rows( $name, $current, $values, $with_front ) {
-		foreach ( $values as $value ):
-			$permalink = str_replace( array( '%postname%', '%post_id%' ), array( 'sample-post', '123' ), $value );
-			?>
 
-			<label>
-				<input type="radio" name="<?= esc_attr( $name ); ?>" value="<?= esc_attr( ($value) ? '/'.$value : '' ) ?>"
-					<?php checked( $current, $value ); ?> />
-				<?php
-				if ( $value ):?>
-					<code><?= home_url().$this->create_permastruct( $permalink, $with_front ); ?></code>
-				<?php
-				else: ?>
-					Default.
-				<?php
-				endif;?>
-
-			</label>
-			<br/>
-		<?php
-		endforeach;
-	}
 
 
 	public function admin_enqueue_scripts( $hook ) {

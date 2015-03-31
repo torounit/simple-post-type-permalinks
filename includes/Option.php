@@ -70,6 +70,8 @@ class SPTP_Option {
 					$key        = "sptp_{$post_type}_structure";
 					$select_key = "sptp_{$post_type}_structure_select";
 
+					$new_options[ $select_key ] = trim($new_options[ $select_key ] , '/');
+
 					if ( $new_options[ $select_key ] != 'custom' ) {
 						$new_options[ $key ] = $new_options[ $select_key ];
 					}

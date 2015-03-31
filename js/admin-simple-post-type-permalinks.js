@@ -4,7 +4,11 @@
         var $fieldset = $(this);
         var $customInput = $fieldset.find('input[type=text]');
         $fieldset.find('input[type=radio]').change(function() {
-            $customInput.val( $(this).val());
+            var val = $(this).val();
+            if( val != 'custom') {
+                $customInput.val( val );
+            }
+
         });
     });
 
