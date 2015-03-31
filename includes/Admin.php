@@ -54,8 +54,9 @@ class SPTP_Admin {
 			array( $this, 'setting_field' ),
 			'permalink',
 			'sptp_setting_section',
-			"sptp_{$post_type}_structure"
+			"sptp_{$post_type}_structure_select"
 		);
+		register_setting( 'permalink', "sptp_{$post_type}_structure_select" );
 		register_setting( 'permalink', "sptp_{$post_type}_structure" );
 	}
 
@@ -67,37 +68,68 @@ class SPTP_Admin {
 	 */
 	public function setting_field( $args ) {
 
-		$post_type        = preg_replace( '/sptp_(.+)_structure/', '$1', $args );
+		$post_type        = preg_replace( '/sptp_(.+)_structure_select/', '$1', $args );
 		$post_type_object = get_post_type_object( $post_type );
-		$permastruct      = SPTP_Option::get_structure( $post_type );
+		$select           = SPTP_Option::get( $args );
 
-
-		$values   = array();
-		$values[] = array(
-			'value' => false,
-			'txt'   => home_url( $this->create_permastruct( "{$post_type_object->rewrite['slug']}/%postname%" ) ),
-		);
-		$values[] = array(
-			'value' => "{$post_type_object->rewrite['slug']}/%{$post_type}_id%",
-			'txt'   => home_url( $this->create_permastruct( "{$post_type_object->rewrite['slug']}/%post_id%" ) ),
+		$values = array(
+			false,
+			"{$post_type_object->rewrite['slug']}/%post_id%",
+			"{$post_type_object->rewrite['slug']}/%postname%.html",
+			"{$post_type_object->rewrite['slug']}/%post_id%.html"
 		);
 
-		$this->input_rows( $args, $permastruct, $values );
+		$this->input_rows( $args, $select, $values );
+
+
+		$permastruct = $this->replace_struct_tag( SPTP_Option::get_structure( $post_type ), $post_type );
+		if ( $permastruct ) {
+			$permastruct = '/' . $permastruct;
+		}
+		?>
+		<p>
+			<label>
+				<input type="radio" name="<?= esc_attr( $args ); ?>" value="custom"
+					<?php checked( $select, 'custom' ); ?> />
+				<code><?= home_url( $this->create_permastruct() ); ?></code>
+
+				<input name="<?= esc_attr( "sptp_{$post_type}_structure" ); ?>"
+				       id="<?= esc_attr( "sptp_{$post_type}_structure" ); ?>"
+				       type="text" value="<?= esc_attr( $permastruct ) ?>" class="regular-text code">
+			</label>
+		</p>
+	<?php
 	}
 
+
+	/**
+	 *
+	 * replace structure tag from internal.
+	 *
+	 * @param string $struct
+	 * @param string $post_type
+	 *
+	 * @return string
+	 */
+	private function replace_struct_tag( $struct, $post_type ) {
+		$search  = array( "%{$post_type}%", "%{$post_type}_id%" );
+		$replace = array( '%postname%', '%post_id%' );
+
+		return str_replace( $search, $replace, $struct );
+	}
 
 	/**
 	 * @param $string
 	 *
 	 * @return string
 	 */
-	private function create_permastruct( $string ) {
+	private function create_permastruct( $string = "" ) {
 
 		/** @var WP_Rewrite $wp_rewrite */
 		global $wp_rewrite;
 		$front = substr( $wp_rewrite->front, 1 );
 
-		return user_trailingslashit( $front.trim( $string, '/') );
+		return user_trailingslashit( join( '/', array( trim( $front, '/' ), trim( $string, '/' ) ) ) );
 	}
 
 
@@ -111,12 +143,21 @@ class SPTP_Admin {
 	 */
 	public function input_rows( $name, $current, $values ) {
 		foreach ( $values as $value ):
+			$permalink = str_replace( array( '%postname%', '%post_id%' ), array( 'sample-post', '123' ), $value );
 			?>
 			<p>
 				<label>
-					<input type="radio" name="<?= esc_attr( $name ); ?>" value="<?= esc_attr( $value['value'] ) ?>"
-						<?php checked( $current, $value['value'] ); ?> />
-					<?= esc_html( $value['txt'] ); ?>
+					<input type="radio" name="<?= esc_attr( $name ); ?>" value="<?= esc_attr( $value ) ?>"
+						<?php checked( $current, $value ); ?> />
+					<?php
+					if ( $value ):?>
+						<code><?= home_url( $this->create_permastruct( $permalink ) ); ?></code>
+					<?php
+					else: ?>
+						Default.
+					<?php
+					endif;?>
+
 				</label>
 			</p>
 		<?php

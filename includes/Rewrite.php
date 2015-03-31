@@ -64,6 +64,11 @@ class SPTP_Rewrite {
 		add_rewrite_tag( $tag, '([0-9]+)', $queryarg );
 
 		if( $struct = SPTP_Option::get_structure( $post_type ) ) {
+
+			$search  = array( '%postname%', '%post_id%' );
+			$replace = array( "%{$post_type}%", "%{$post_type}_id%" );
+			$struct = str_replace( $search, $replace, $struct );
+
 			add_permastruct( $post_type, $struct, $permastruct_args );
 		}
 	}
