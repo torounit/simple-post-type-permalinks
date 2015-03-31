@@ -10,6 +10,8 @@
 class SPTP_Admin {
 
 	public function __construct() {
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+
 		add_action( 'admin_init', array( $this, 'admin_fields' ) );
 	}
 
@@ -71,6 +73,8 @@ class SPTP_Admin {
 		$post_type        = preg_replace( '/sptp_(.+)_structure_select/', '$1', $args );
 		$post_type_object = get_post_type_object( $post_type );
 		$select           = SPTP_Option::get( $args );
+		$with_front = $post_type_object->rewrite['with_front'];
+
 
 		$values = array(
 			false,
@@ -79,25 +83,27 @@ class SPTP_Admin {
 			"{$post_type_object->rewrite['slug']}/%post_id%.html"
 		);
 
-		$this->input_rows( $args, $select, $values );
-
 
 		$permastruct = $this->replace_struct_tag( SPTP_Option::get_structure( $post_type ), $post_type );
 		if ( $permastruct ) {
 			$permastruct = '/' . $permastruct;
 		}
 		?>
-		<p>
+		<fieldset class="sptp-fieldset <?=($with_front) ? 'with-front': '';?>">
+			<?php
+			$this->input_rows( $args, $select, $values, $with_front );
+			?>
 			<label>
 				<input type="radio" name="<?= esc_attr( $args ); ?>" value="custom"
 					<?php checked( $select, 'custom' ); ?> />
-				<code><?= home_url( $this->create_permastruct() ); ?></code>
+				<code><?= home_url().$this->create_permastruct('', $with_front ); ?></code>
 
 				<input name="<?= esc_attr( "sptp_{$post_type}_structure" ); ?>"
 				       id="<?= esc_attr( "sptp_{$post_type}_structure" ); ?>"
 				       type="text" value="<?= esc_attr( $permastruct ) ?>" class="regular-text code">
 			</label>
-		</p>
+
+		</fieldset>
 	<?php
 	}
 
@@ -123,13 +129,20 @@ class SPTP_Admin {
 	 *
 	 * @return string
 	 */
-	private function create_permastruct( $string = "" ) {
+	private function create_permastruct( $string = "" ,$with_front = false ) {
 
 		/** @var WP_Rewrite $wp_rewrite */
 		global $wp_rewrite;
-		$front = substr( $wp_rewrite->front, 1 );
+		$string = trim( $string, '/' );
+		if( $string ) {
+			$string = '/'.$string;
+		}
+		$front = '';
+		if($with_front) {
+			$front = "<span class='front'>/".trim( $wp_rewrite->front, '/' )."</span>";
+		}
 
-		return user_trailingslashit( join( '/', array( trim( $front, '/' ), trim( $string, '/' ) ) ) );
+		return $front.user_trailingslashit( $string );
 	}
 
 
@@ -141,27 +154,40 @@ class SPTP_Admin {
 	 * @param mixed $current
 	 * @param array $values
 	 */
-	public function input_rows( $name, $current, $values ) {
+	public function input_rows( $name, $current, $values, $with_front ) {
 		foreach ( $values as $value ):
 			$permalink = str_replace( array( '%postname%', '%post_id%' ), array( 'sample-post', '123' ), $value );
 			?>
-			<p>
-				<label>
-					<input type="radio" name="<?= esc_attr( $name ); ?>" value="<?= esc_attr( $value ) ?>"
-						<?php checked( $current, $value ); ?> />
-					<?php
-					if ( $value ):?>
-						<code><?= home_url( $this->create_permastruct( $permalink ) ); ?></code>
-					<?php
-					else: ?>
-						Default.
-					<?php
-					endif;?>
 
-				</label>
-			</p>
+			<label>
+				<input type="radio" name="<?= esc_attr( $name ); ?>" value="<?= esc_attr( ($value) ? '/'.$value : '' ) ?>"
+					<?php checked( $current, $value ); ?> />
+				<?php
+				if ( $value ):?>
+					<code><?= home_url().$this->create_permastruct( $permalink, $with_front ); ?></code>
+				<?php
+				else: ?>
+					Default.
+				<?php
+				endif;?>
+
+			</label>
+			<br/>
 		<?php
 		endforeach;
+	}
+
+
+	public function admin_enqueue_scripts( $hook ) {
+		if ( 'options-permalink.php' === $hook ) {
+			wp_enqueue_script(
+				'admin-sptp-script',
+				plugins_url( 'js/admin-simple-post-type-permalinks.js', SPTP_FILE ),
+				array( 'jquery' ),
+				SPTP_VER,
+				true
+			);
+		}
 	}
 
 }
