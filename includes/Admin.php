@@ -1,18 +1,18 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: torounit
- * Date: 15/03/31
- * Time: 12:02
- */
 
+/**
+ *
+ * Plugin Admin View Class.
+ *
+ * @package SPTP
+ * @version 0.1.0
+ */
 class SPTP_Admin {
 
-	function __construct() {
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+	public function __construct() {
 		add_action( 'admin_init', array( $this, 'admin_fields' ) );
-		add_action( 'admin_init', array( $this, 'save_options' ) );
 	}
+
 
 	public function admin_fields() {
 
@@ -25,11 +25,11 @@ class SPTP_Admin {
 		$post_types = get_post_types(
 			array(
 				'publicly_queryable' => true,
-				'_builtin'          => false,
-				)
+				'_builtin'           => false,
+			)
 		);
 
-		array_walk( $post_types, array( $this, 'add_settings_field') );
+		array_walk( $post_types, array( $this, 'add_settings_field' ) );
 	}
 
 
@@ -41,6 +41,12 @@ class SPTP_Admin {
 
 	}
 
+	/**
+	 *
+	 * register setting field row.
+	 *
+	 * @param string $post_type
+	 */
 	public function add_settings_field( $post_type ) {
 
 		add_settings_field( "sptp_{$post_type}_structure",
@@ -53,88 +59,68 @@ class SPTP_Admin {
 		register_setting( 'permalink', "sptp_{$post_type}_structure" );
 	}
 
+	/**
+	 *
+	 * setting field row.
+	 *
+	 * @param $args
+	 */
 	public function setting_field( $args ) {
-		global /** @var WP_Rewrite $wp_rewrite */
-		$wp_rewrite;
 
-		$post_type = preg_replace( '/sptp_(.+)_structure/','$1', $args );
-		$permastruct = $wp_rewrite->get_extra_permastruct( $post_type );
-
-		$permastruct_base = str_replace( array( "%{$post_type}%", "%{$post_type}_id%"), "%s" , $permastruct );
-
-		$permastruct_id = sprintf( $permastruct_base, "%{$post_type}_id%" );
-		$permastruct_name = sprintf( $permastruct_base, "%{$post_type}%" );
-
-		?>
-
-		<p>
-			<label>
-				<input type="radio" name="<?=esc_attr($args);?>" value="0"
-					<?php checked($permastruct, $permastruct_name ); ?> />
-				<?=home_url( user_trailingslashit( sprintf( $permastruct_base, "%postname%" ) ) );?> ( Default )
-			</label>
-		</p>
-
-		<p>
-			<label>
-				<input type="radio" name="<?=esc_attr($args);?>" value="<?=$permastruct_id?>"
-					<?php checked( $permastruct, $permastruct_id ); ?> />
-				<?=home_url( user_trailingslashit( sprintf( $permastruct_base, "%post_id%" ) ) );?>
-			</label>
-		</p>
+		$post_type        = preg_replace( '/sptp_(.+)_structure/', '$1', $args );
+		$post_type_object = get_post_type_object( $post_type );
+		$permastruct      = SPTP_Option::get_structure( $post_type );
 
 
-		<?php
-	}
+		$values   = array();
+		$values[] = array(
+			'value' => false,
+			'txt'   => home_url( $this->create_permastruct( "{$post_type_object->rewrite['slug']}/%postname%" ) ),
+		);
+		$values[] = array(
+			'value' => "{$post_type_object->rewrite['slug']}/%{$post_type}_id%",
+			'txt'   => home_url( $this->create_permastruct( "{$post_type_object->rewrite['slug']}/%post_id%" ) ),
+		);
 
-	public function save_options() {
-		if ( isset( $_POST['submit'] ) and isset( $_POST['_wp_http_referer'] ) ) {
-			if ( false !== strpos( $_POST['_wp_http_referer'], 'options-permalink.php' ) ) {
-				$request =  $_POST;
-				$new_options = $this->extract_options( $request );
-				$old_options = get_option( 'sptp_options', array() );
-				$options = array_merge( $old_options, $new_options );
-				update_option('sptp_options', $options );
-			}
-		}
+		$this->input_rows( $args, $permastruct, $values );
 	}
 
 
 	/**
-	 * @param array $options
+	 * @param $string
 	 *
-	 * @return array
+	 * @return string
 	 */
-	private function extract_options( Array $options ) {
-		$extracted = [];
-		foreach( $options as $key => $value ) {
-			if( strpos($key, 'sptp_') === 0 ) {
-				$extracted[$key] = $value;
-			}
-		}
-		return $extracted;
+	private function create_permastruct( $string ) {
+
+		/** @var WP_Rewrite $wp_rewrite */
+		global $wp_rewrite;
+		$front = substr( $wp_rewrite->front, 1 );
+
+		return user_trailingslashit( $front.trim( $string, '/') );
 	}
 
 
-
-
-	public function admin_enqueue_scripts( $hook ) {
-		if ( 'settings_page_sptp' === $hook ) {
-			wp_enqueue_style(
-				'admin-sptp-style',
-				plugins_url( 'css/admin-simple-post-type-permalinks.min.css', __FILE__ ),
-				array(),
-				SPTP_VER,
-				'all'
-			);
-
-			wp_enqueue_script(
-				'admin-sptp-script',
-				plugins_url( 'js/admin-simple-post-type-permalinks.min.js', __FILE__ ),
-				array( 'jquery' ),
-				SPTP_VER,
-				true
-			);
-		}
+	/**
+	 *
+	 * radio button.
+	 *
+	 * @param string $name
+	 * @param mixed $current
+	 * @param array $values
+	 */
+	public function input_rows( $name, $current, $values ) {
+		foreach ( $values as $value ):
+			?>
+			<p>
+				<label>
+					<input type="radio" name="<?= esc_attr( $name ); ?>" value="<?= esc_attr( $value['value'] ) ?>"
+						<?php checked( $current, $value['value'] ); ?> />
+					<?= esc_html( $value['txt'] ); ?>
+				</label>
+			</p>
+		<?php
+		endforeach;
 	}
+
 }

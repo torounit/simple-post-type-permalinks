@@ -1,5 +1,13 @@
 <?php
 
+/**
+ *
+ * Manage Rewrite rules.
+ *
+ * @package SPTP
+ * @version 0.1.0
+ */
+
 class SPTP_Rewrite {
 
 	/** @var array */
@@ -31,15 +39,18 @@ class SPTP_Rewrite {
 		);
 	}
 
+	/**
+	 * Override Permastructs.
+	 */
 	public function register_rewrite_rules() {
 		array_walk( $this->queue, array($this, 'register_rewrite_rule') );
 	}
 
-	public function reset_rewrite_rules() {
-		array_walk( $this->queue, array($this, 'reset_rewrite_rule') );
-	}
 
-	public function register_rewrite_rule( $param ) {
+	/**
+	 * @param array $param
+	 */
+	public function register_rewrite_rule( Array $param ) {
 
 		$args = $param['args'];
 		$post_type = $param['post_type'];
@@ -52,9 +63,17 @@ class SPTP_Rewrite {
 
 		add_rewrite_tag( $tag, '([0-9]+)', $queryarg );
 
-		if( SPTP_Util::get_option( "sptp_{$post_type}_structure" ) ) {
-			add_permastruct( $post_type, "{$args->rewrite['slug']}/{$tag}", $permastruct_args );
+		if( $struct = SPTP_Option::get_structure( $post_type ) ) {
+			add_permastruct( $post_type, $struct, $permastruct_args );
 		}
+	}
+
+
+	/**
+	 * Reset Permastructs.
+	 */
+	public function reset_rewrite_rules() {
+		array_walk( $this->queue, array($this, 'reset_rewrite_rule') );
 	}
 
 	public function reset_rewrite_rule( $param ) {
@@ -64,7 +83,7 @@ class SPTP_Rewrite {
 		$permastruct_args         = $args->rewrite;
 		$permastruct_args['feed'] = $permastruct_args['feeds'];
 
-		if( SPTP_Util::get_option( "sptp_{$post_type}_structure" ) ) {
+		if( SPTP_Option::get_structure( $post_type ) ) {
 				add_permastruct( $post_type, "{$args->rewrite['slug']}/%$post_type%", $permastruct_args );
 		}
 

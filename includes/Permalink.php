@@ -1,5 +1,13 @@
 <?php
 
+/**
+ *
+ * Permalink filter.
+ *
+ * @package SPTP
+ * @version 0.1.0
+ */
+
 class SPTP_Permalink {
 
 	public function __construct() {
@@ -17,7 +25,7 @@ class SPTP_Permalink {
 	 */
 	public function post_type_link( $post_link, WP_Post $post ) {
 
-		if( !SPTP_Util::get_option( "sptp_{$post->post_type}_structure" ) ) {
+		if( !SPTP_Option::get_option( "sptp_{$post->post_type}_structure" ) ) {
 			return $post_link;
 		}
 

@@ -1,5 +1,9 @@
 <?php
 /**
+ * @package SPTP
+ * @version 0.1.0
+ */
+/**
  * Plugin Name: Simple Post Type Permalinks
  * Plugin URI:  http://www.torounit.com
  * Description: Easy to change the custom post type of permlink.
@@ -22,7 +26,7 @@ $data = get_file_data( __FILE__, array( 'ver' => 'Version', 'lang_dir' => 'Domai
 define( 'SPTP_VER', $data['ver'] );
 define( 'SPTP_LANG_DIR', $data['lang_dir'] );
 
-require SPTP_PATH . '/includes/Util.php';
+require SPTP_PATH . '/includes/Option.php';
 require SPTP_PATH . '/includes/Rewrite.php';
 require SPTP_PATH . '/includes/Permalink.php';
 require SPTP_PATH . '/includes/Admin.php';
