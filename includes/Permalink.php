@@ -25,7 +25,7 @@ class SPTP_Permalink {
 	 */
 	public function post_type_link( $post_link, WP_Post $post ) {
 
-		if( !SPTP_Option::get_option( "sptp_{$post->post_type}_structure" ) ) {
+		if( !SPTP_Option::get_structure( $post->post_type ) ) {
 			return $post_link;
 		}
 
