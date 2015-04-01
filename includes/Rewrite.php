@@ -7,7 +7,6 @@
  * @package SPTP
  * @version 0.1.0
  */
-
 class SPTP_Rewrite {
 
 	/** @var array */
@@ -25,17 +24,17 @@ class SPTP_Rewrite {
 	 * after a post type is registered.
 	 *
 	 * @param string $post_type Post type.
-	 * @param object $args      Arguments used to register the post type.
+	 * @param object $args Arguments used to register the post type.
 	 */
 	public function registered_post_type( $post_type, $args ) {
 
-		if ( $args->_builtin or !$args->publicly_queryable ) {
+		if ( $args->_builtin or ! $args->publicly_queryable ) {
 			return;
 		}
 
 		$this->queue[ $post_type ] = array(
-			'post_type'         => $post_type,
-			'args'              => $args,
+			'post_type' => $post_type,
+			'args'      => $args,
 		);
 	}
 
@@ -43,7 +42,7 @@ class SPTP_Rewrite {
 	 * Override Permastructs.
 	 */
 	public function register_rewrite_rules() {
-		array_walk( $this->queue, array($this, 'register_rewrite_rule') );
+		array_walk( $this->queue, array( $this, 'register_rewrite_rule' ) );
 	}
 
 
@@ -52,7 +51,7 @@ class SPTP_Rewrite {
 	 */
 	public function register_rewrite_rule( Array $param ) {
 
-		$args = $param['args'];
+		$args      = $param['args'];
 		$post_type = $param['post_type'];
 
 		$permastruct_args         = $args->rewrite;
@@ -63,11 +62,11 @@ class SPTP_Rewrite {
 
 		add_rewrite_tag( $tag, '([0-9]+)', $queryarg );
 
-		if( $struct = SPTP_Option::get_structure( $post_type ) ) {
+		if ( $struct = SPTP_Option::get_structure( $post_type ) ) {
 
 			$search  = array( '%postname%', '%post_id%' );
 			$replace = array( "%{$post_type}%", "%{$post_type}_id%" );
-			$struct = str_replace( $search, $replace, $struct );
+			$struct  = str_replace( $search, $replace, $struct );
 
 			add_permastruct( $post_type, $struct, $permastruct_args );
 		}
@@ -78,18 +77,18 @@ class SPTP_Rewrite {
 	 * Reset Permastructs.
 	 */
 	public function reset_rewrite_rules() {
-		array_walk( $this->queue, array($this, 'reset_rewrite_rule') );
+		array_walk( $this->queue, array( $this, 'reset_rewrite_rule' ) );
 	}
 
 	public function reset_rewrite_rule( $param ) {
-		$args = $param['args'];
+		$args      = $param['args'];
 		$post_type = $param['post_type'];
 
 		$permastruct_args         = $args->rewrite;
 		$permastruct_args['feed'] = $permastruct_args['feeds'];
 
-		if( SPTP_Option::get_structure( $post_type ) ) {
-				add_permastruct( $post_type, "{$args->rewrite['slug']}/%$post_type%", $permastruct_args );
+		if ( SPTP_Option::get_structure( $post_type ) ) {
+			add_permastruct( $post_type, "{$args->rewrite['slug']}/%$post_type%", $permastruct_args );
 		}
 
 	}

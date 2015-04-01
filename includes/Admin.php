@@ -11,7 +11,6 @@ class SPTP_Admin {
 
 	public function __construct() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-
 		add_action( 'admin_init', array( $this, 'admin_fields' ) );
 	}
 
@@ -73,7 +72,7 @@ class SPTP_Admin {
 		$post_type        = preg_replace( '/sptp_(.+)_structure_select/', '$1', $args );
 		$post_type_object = get_post_type_object( $post_type );
 		$select           = SPTP_Option::get( $args );
-		$with_front = $post_type_object->rewrite['with_front'];
+		$with_front       = $post_type_object->rewrite['with_front'];
 
 
 		$values = array(
@@ -86,14 +85,14 @@ class SPTP_Admin {
 
 		$permastruct = SPTP_Option::get_structure( $post_type );
 		?>
-		<fieldset class="sptp-fieldset <?=($with_front) ? 'with-front': '';?>">
+		<fieldset class="sptp-fieldset <?= ( $with_front ) ? 'with-front' : ''; ?>">
 			<?php
 			$this->input_rows( $args, $select, $values, $with_front );
 			?>
 			<label>
 				<input type="radio" name="<?= esc_attr( $args ); ?>" value="custom"
 					<?php checked( $select, 'custom' ); ?> />
-				<code><?= home_url().'/'.$this->create_permastruct('', $with_front ); ?></code>
+				<code><?= home_url() . '/' . $this->create_permastruct( '', $with_front ); ?></code>
 
 				<input name="<?= esc_attr( "sptp_{$post_type}_structure" ); ?>"
 				       id="<?= esc_attr( "sptp_{$post_type}_structure" ); ?>"
@@ -122,7 +121,7 @@ class SPTP_Admin {
 					<?php checked( $current, $value ); ?> />
 				<?php
 				if ( $value ):?>
-					<code><?= home_url().'/'.$this->create_permastruct( $permalink, $with_front ); ?></code>
+					<code><?= home_url() . '/' . $this->create_permastruct( $permalink, $with_front ); ?></code>
 				<?php
 				else: ?>
 					Default.
@@ -136,26 +135,22 @@ class SPTP_Admin {
 	}
 
 
-
 	/**
 	 * @param $string
 	 *
 	 * @return string
 	 */
-	private function create_permastruct( $string = "" ,$with_front = false ) {
+	private function create_permastruct( $string = "", $with_front = false ) {
 
 		/** @var WP_Rewrite $wp_rewrite */
 		global $wp_rewrite;
 		$front = '';
-		if( $with_front and substr($wp_rewrite->front, 1)) {
-			$front = "<span class='front'>".substr($wp_rewrite->front, 1)."</span>";
+		if ( $with_front and substr( $wp_rewrite->front, 1 ) ) {
+			$front = "<span class='front'>" . substr( $wp_rewrite->front, 1 ) . "</span>";
 		}
 
-		return $front.$string;
+		return $front . $string;
 	}
-
-
-
 
 
 	public function admin_enqueue_scripts( $hook ) {

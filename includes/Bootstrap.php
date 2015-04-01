@@ -23,14 +23,23 @@ class SPTP_Bootstrap {
 
 	public function __construct() {
 
-		register_activation_hook(   SPTP_FILE, array( $this, 'queue_flush_rewrite_rules' ) );
-		register_deactivation_hook( SPTP_FILE, array( $this, 'deactivation' ) );
-		register_uninstall_hook( SPTP_FILE, array( __CLASS__, 'uninstall' ) );
+		$this->setup();
 
 		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
 		add_action( 'wp_loaded', array( $this, 'flush_rewrite_rules' ), 999 );
+
 	}
 
+	private function setup() {
+		register_activation_hook( SPTP_FILE, array( $this, 'queue_flush_rewrite_rules' ) );
+		register_deactivation_hook( SPTP_FILE, array( $this, 'deactivation' ) );
+		register_uninstall_hook( SPTP_FILE, array( __CLASS__, 'uninstall' ) );
+	}
+
+	public static function uninstall() {
+		delete_option( 'sptp_queue_flush_rewrite_rules' );
+		delete_option( 'sptp_options' );
+	}
 
 	public function plugins_loaded() {
 
@@ -47,19 +56,16 @@ class SPTP_Bootstrap {
 		);
 	}
 
-
 	private function load_modules() {
-		$this->option   = new SPTP_Option();
+		$this->option    = new SPTP_Option();
 		$this->rewrite   = new SPTP_Rewrite();
 		$this->admin     = new SPTP_Admin();
 		$this->permalink = new SPTP_Permalink();
 	}
 
-
 	public function queue_flush_rewrite_rules() {
 		update_option( 'sptp_queue_flush_rewrite_rules', 1 );
 	}
-
 
 	public function flush_rewrite_rules() {
 		if ( get_option( 'sptp_queue_flush_rewrite_rules' ) ) {
@@ -68,14 +74,8 @@ class SPTP_Bootstrap {
 		}
 	}
 
-
 	public function deactivation() {
 		$this->rewrite->reset_rewrite_rules();
 		flush_rewrite_rules();
-	}
-
-	public static function uninstall() {
-		delete_option( 'sptp_queue_flush_rewrite_rules' );
-		delete_option( 'sptp_options' );
 	}
 }

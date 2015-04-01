@@ -10,22 +10,9 @@
 class SPTP_Option {
 
 
-	/**
-	 * @param string $key
-	 *
-	 * @return bool|string
-	 */
-	static function get( $key ) {
-
-		$options = get_option( 'sptp_options' );
-
-		if ( empty( $options[ $key ] ) ) {
-			return false;
-		}
-
-		return $options[ $key ];
+	public function __construct() {
+		add_action( 'admin_init', array( $this, 'save_options' ) );
 	}
-
 
 	/**
 	 * @param string $post_type
@@ -42,8 +29,20 @@ class SPTP_Option {
 		return self::get( "sptp_{$post_type}_structure" );
 	}
 
-	public function __construct() {
-		add_action( 'admin_init', array( $this, 'save_options' ) );
+	/**
+	 * @param string $key
+	 *
+	 * @return bool|string
+	 */
+	static function get( $key ) {
+
+		$options = get_option( 'sptp_options' );
+
+		if ( empty( $options[ $key ] ) ) {
+			return false;
+		}
+
+		return $options[ $key ];
 	}
 
 	/**
@@ -70,13 +69,13 @@ class SPTP_Option {
 					$key        = "sptp_{$post_type}_structure";
 					$select_key = "sptp_{$post_type}_structure_select";
 
-					$new_options[ $select_key ] = trim($new_options[ $select_key ] , '/');
+					$new_options[ $select_key ] = trim( $new_options[ $select_key ], '/' );
 
 					if ( $new_options[ $select_key ] != 'custom' ) {
 						$new_options[ $key ] = $new_options[ $select_key ];
 					}
 
-					$new_options[ $key ] = trim($new_options[ $key ], '/');
+					$new_options[ $key ] = trim( $new_options[ $key ], '/' );
 
 					//If Empty set default.
 					if ( empty( $new_options[ $key ] ) ) {
@@ -90,7 +89,6 @@ class SPTP_Option {
 			}
 		}
 	}
-
 
 
 	/**
