@@ -19,7 +19,7 @@ class SPTP_Admin {
 	public function admin_fields() {
 
 		add_settings_section( 'sptp_setting_section',
-			__( 'Permalink Setting for custom post type', 'sptp' ),
+			__( 'Custom Post Type Permalink Settings', 'sptp' ),
 			array( $this, 'setting_section' ),
 			'permalink'
 		);
@@ -37,7 +37,7 @@ class SPTP_Admin {
 
 	public function setting_section() {
 		?>
-		<p>Select Permalink Setting.</p>
+		<p>Select permalink setting.</p>
 
 	<?php
 
@@ -84,10 +84,7 @@ class SPTP_Admin {
 		);
 
 
-		$permastruct = $this->replace_struct_tag( SPTP_Option::get_structure( $post_type ), $post_type );
-		if ( $permastruct ) {
-			$permastruct = '/' . $permastruct;
-		}
+		$permastruct = SPTP_Option::get_structure( $post_type );
 		?>
 		<fieldset class="sptp-fieldset <?=($with_front) ? 'with-front': '';?>">
 			<?php
@@ -96,7 +93,7 @@ class SPTP_Admin {
 			<label>
 				<input type="radio" name="<?= esc_attr( $args ); ?>" value="custom"
 					<?php checked( $select, 'custom' ); ?> />
-				<code><?= home_url().$this->create_permastruct('', $with_front ); ?></code>
+				<code><?= home_url().'/'.$this->create_permastruct('', $with_front ); ?></code>
 
 				<input name="<?= esc_attr( "sptp_{$post_type}_structure" ); ?>"
 				       id="<?= esc_attr( "sptp_{$post_type}_structure" ); ?>"
@@ -121,11 +118,11 @@ class SPTP_Admin {
 			?>
 
 			<label>
-				<input type="radio" name="<?= esc_attr( $name ); ?>" value="<?= esc_attr( ($value) ? '/'.$value : '' ) ?>"
+				<input type="radio" name="<?= esc_attr( $name ); ?>" value="<?= esc_attr( $value ) ?>"
 					<?php checked( $current, $value ); ?> />
 				<?php
 				if ( $value ):?>
-					<code><?= home_url().$this->create_permastruct( $permalink, $with_front ); ?></code>
+					<code><?= home_url().'/'.$this->create_permastruct( $permalink, $with_front ); ?></code>
 				<?php
 				else: ?>
 					Default.
@@ -138,21 +135,7 @@ class SPTP_Admin {
 		endforeach;
 	}
 
-	/**
-	 *
-	 * replace structure tag from internal.
-	 *
-	 * @param string $struct
-	 * @param string $post_type
-	 *
-	 * @return string
-	 */
-	private function replace_struct_tag( $struct, $post_type ) {
-		$search  = array( "%{$post_type}%", "%{$post_type}_id%" );
-		$replace = array( '%postname%', '%post_id%' );
 
-		return str_replace( $search, $replace, $struct );
-	}
 
 	/**
 	 * @param $string
@@ -163,16 +146,12 @@ class SPTP_Admin {
 
 		/** @var WP_Rewrite $wp_rewrite */
 		global $wp_rewrite;
-		$string = trim( $string, '/' );
-		if( $string ) {
-			$string = '/'.$string;
-		}
 		$front = '';
-		if($with_front) {
-			$front = "<span class='front'>/".trim( $wp_rewrite->front, '/' )."</span>";
+		if( $with_front and substr($wp_rewrite->front, 1)) {
+			$front = "<span class='front'>".substr($wp_rewrite->front, 1)."</span>";
 		}
 
-		return $front.user_trailingslashit( $string );
+		return $front.$string;
 	}
 
 

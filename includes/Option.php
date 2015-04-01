@@ -76,7 +76,7 @@ class SPTP_Option {
 						$new_options[ $key ] = $new_options[ $select_key ];
 					}
 
-					$new_options[ $key ] = $this->replace_struct_tag($new_options[ $key ], $post_type);
+					$new_options[ $key ] = trim($new_options[ $key ], '/');
 
 					//If Empty set default.
 					if ( empty( $new_options[ $key ] ) ) {
@@ -91,20 +91,6 @@ class SPTP_Option {
 		}
 	}
 
-
-	/**
-	 *
-	 * replace structure tag for internal.
-	 * @param string $struct
-	 * @param string $post_type
-	 *
-	 * @return string
-	 */
-	private function replace_struct_tag( $struct, $post_type ) {
-		$search  = array( '%postname%', '%post_id%' );
-		$replace = array( "%{$post_type}%", "%{$post_type}_id%" );
-		return trim( str_replace( $search, $replace, $struct ), '/' );
-	}
 
 
 	/**
