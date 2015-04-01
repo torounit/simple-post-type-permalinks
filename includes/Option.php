@@ -101,7 +101,7 @@ class SPTP_Option {
 	 * @return array
 	 */
 	private function extract_options( Array $options ) {
-		$extracted = [ ];
+		$extracted = array();
 		foreach ( $options as $key => $value ) {
 			if ( strpos( $key, 'sptp_' ) === 0 ) {
 				$extracted[ $key ] = $value;
