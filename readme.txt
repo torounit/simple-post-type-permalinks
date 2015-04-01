@@ -27,6 +27,8 @@ Please Fork and Pull Request!
 1. Upload the entire `/simple-post-type-permalinks` directory to the `/wp-content/plugins/` directory.
 2. Activate Simple Post Type Permalinks through the 'Plugins' menu in WordPress.
 
+Access the permalinks setting by going to *Settings -> Permalinks*.
+
 == Frequently Asked Questions ==
 
 = Which tag that can be used? =
@@ -34,7 +36,7 @@ Please Fork and Pull Request!
 Only `%post_id%` and `%postname%`.
 
 
-== Setting on Code. ==
+== Setting on Code ==
 
 
 Example:
