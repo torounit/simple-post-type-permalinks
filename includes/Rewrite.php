@@ -9,13 +9,21 @@
  */
 class SPTP_Rewrite {
 
+
 	/** @var array */
 	private $queue;
 
+	/** @var  SPTP_Option */
+	private $option;
+
+	public function __construct( SPTP_Option $option ) {
+		$this->option = $option;
+	}
+
 	/**
-	 * constructor
+	 * add_hooks
 	 */
-	public function __construct() {
+	public function add_hooks() {
 		add_action( 'registered_post_type', array( $this, 'registered_post_type' ), 10, 2 );
 		add_action( 'wp_loaded', array( $this, 'register_rewrite_rules' ), 100, 2 );
 	}
@@ -51,6 +59,10 @@ class SPTP_Rewrite {
 	 */
 	public function register_rewrite_rule( Array $param ) {
 
+		if( '' == get_option( 'permalink_structure' ) ) {
+			return;
+		}
+
 		$args      = $param['args'];
 		$post_type = $param['post_type'];
 
@@ -62,7 +74,7 @@ class SPTP_Rewrite {
 
 		add_rewrite_tag( $tag, '([0-9]+)', $queryarg );
 
-		if ( $struct = SPTP_Option::get_structure( $post_type ) ) {
+		if ( $struct = $this->option->get_structure( $post_type ) ) {
 
 			$search  = array( '%postname%', '%post_id%' );
 			$replace = array( "%{$post_type}%", "%{$post_type}_id%" );
@@ -87,7 +99,7 @@ class SPTP_Rewrite {
 		$permastruct_args         = $args->rewrite;
 		$permastruct_args['feed'] = $permastruct_args['feeds'];
 
-		if ( SPTP_Option::get_structure( $post_type ) ) {
+		if ( $this->option->get_structure( $post_type ) ) {
 			add_permastruct( $post_type, "{$args->rewrite['slug']}/%$post_type%", $permastruct_args );
 		}
 

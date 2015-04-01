@@ -34,5 +34,5 @@ require SPTP_PATH . '/includes/Bootstrap.php';
 
 
 
-new SPTP_Bootstrap();
+$sptp = new SPTP_Bootstrap();
 

@@ -10,7 +10,8 @@
 class SPTP_Option {
 
 
-	public function __construct() {
+
+	public function add_hooks() {
 		add_action( 'admin_init', array( $this, 'save_options' ) );
 	}
 
@@ -19,14 +20,14 @@ class SPTP_Option {
 	 *
 	 * @return bool|string
 	 */
-	static function get_structure( $post_type ) {
+	public function get_structure( $post_type ) {
 		$post_type_object = get_post_type_object( $post_type );
 
 		if ( ! empty( $post_type_object->permalink_structure ) ) {
 			return $post_type_object->permalink_structure;
 		}
 
-		return self::get( "sptp_{$post_type}_structure" );
+		return $this->get( "sptp_{$post_type}_structure" );
 	}
 
 	/**
@@ -34,7 +35,7 @@ class SPTP_Option {
 	 *
 	 * @return bool|string
 	 */
-	static function get( $key ) {
+	public function get( $key ) {
 
 		$options = get_option( 'sptp_options' );
 

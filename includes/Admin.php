@@ -9,7 +9,14 @@
  */
 class SPTP_Admin {
 
-	public function __construct() {
+	/** @var  SPTP_Option */
+	private $option;
+
+	public function __construct( SPTP_Option $option ) {
+		$this->option = $option;
+	}
+
+	public function add_hooks() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'admin_init', array( $this, 'admin_fields' ) );
 	}
@@ -71,7 +78,7 @@ class SPTP_Admin {
 
 		$post_type        = preg_replace( '/sptp_(.+)_structure_select/', '$1', $args );
 		$post_type_object = get_post_type_object( $post_type );
-		$select           = SPTP_Option::get( $args );
+		$select           = $this->option->get( $args );
 		$with_front       = $post_type_object->rewrite['with_front'];
 
 
@@ -83,7 +90,7 @@ class SPTP_Admin {
 		);
 
 
-		$permastruct = SPTP_Option::get_structure( $post_type );
+		$permastruct = $this->option->get_structure( $post_type );
 		?>
 		<fieldset class="sptp-fieldset <?= ( $with_front ) ? 'with-front' : ''; ?>">
 			<?php
@@ -110,8 +117,9 @@ class SPTP_Admin {
 	 * @param string $name
 	 * @param mixed $current
 	 * @param array $values
+	 * @param bool $with_front
 	 */
-	public function input_rows( $name, $current, $values, $with_front ) {
+	public function input_rows( $name, $current, $values, $with_front = false ) {
 		foreach ( $values as $value ):
 			$permalink = str_replace( array( '%postname%', '%post_id%' ), array( 'sample-post', '123' ), $value );
 			?>
@@ -136,7 +144,9 @@ class SPTP_Admin {
 
 
 	/**
-	 * @param $string
+	 * @param string $string
+	 *
+	 * @param bool $with_front
 	 *
 	 * @return string
 	 */
@@ -145,7 +155,7 @@ class SPTP_Admin {
 		/** @var WP_Rewrite $wp_rewrite */
 		global $wp_rewrite;
 		$front = '';
-		if ( $with_front and substr( $wp_rewrite->front, 1 ) ) {
+		if ( $with_front ) {
 			$front = "<span class='front'>" . substr( $wp_rewrite->front, 1 ) . "</span>";
 		}
 

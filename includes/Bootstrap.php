@@ -9,6 +9,7 @@
  */
 class SPTP_Bootstrap {
 
+
 	/** @var SPTP_Option */
 	private $option;
 
@@ -30,43 +31,74 @@ class SPTP_Bootstrap {
 
 	}
 
+	/**
+	 *
+	 * for activate and uninstall hooks.
+	 *
+	 */
 	private function setup() {
 		register_activation_hook( SPTP_FILE, array( $this, 'queue_flush_rewrite_rules' ) );
 		register_deactivation_hook( SPTP_FILE, array( $this, 'deactivation' ) );
 		register_uninstall_hook( SPTP_FILE, array( __CLASS__, 'uninstall' ) );
 	}
 
+	/**
+	 *
+	 * Delete SPTP options.
+	 *
+	 */
 	public static function uninstall() {
 		delete_option( 'sptp_queue_flush_rewrite_rules' );
 		delete_option( 'sptp_options' );
 	}
 
+	/**
+	 *
+	 * initialize.
+	 *
+	 */
 	public function plugins_loaded() {
 
-		$this->load_textdomain();
+		load_plugin_textdomain( 'sptp', false, dirname( plugin_basename( SPTP_FILE ) ) . SPTP_LANG_DIR );
+
 		$this->load_modules();
 
 	}
 
-	private function load_textdomain() {
-		load_plugin_textdomain(
-			'sptp',
-			false,
-			dirname( plugin_basename( SPTP_FILE ) ) . SPTP_LANG_DIR
-		);
-	}
 
+	/**
+	 *
+	 * Load Plugin modules.
+	 *
+	 */
 	private function load_modules() {
-		$this->option    = new SPTP_Option();
-		$this->rewrite   = new SPTP_Rewrite();
-		$this->admin     = new SPTP_Admin();
-		$this->permalink = new SPTP_Permalink();
+
+		$this->option    = apply_filters( 'sptp_module_option', new SPTP_Option() );
+		$this->admin     = apply_filters( 'sptp_module_admin', new SPTP_Admin( $this->option ) );
+		$this->rewrite   = apply_filters( 'sptp_module_rewrite', new SPTP_Rewrite( $this->option ) );
+		$this->permalink = apply_filters( 'sptp_module_permalink', new SPTP_Permalink( $this->option ) );
+
+		$this->option->add_hooks();
+		$this->admin->add_hooks();
+		$this->rewrite->add_hooks();
+		$this->permalink->add_hooks();
+
 	}
 
+	/**
+	 *
+	 * queue reset rewrite rules for next request.
+	 *
+	 */
 	public function queue_flush_rewrite_rules() {
 		update_option( 'sptp_queue_flush_rewrite_rules', 1 );
 	}
 
+	/**
+	 *
+	 *  Re-Create Rewrite Rules.
+	 *
+	 */
 	public function flush_rewrite_rules() {
 		if ( get_option( 'sptp_queue_flush_rewrite_rules' ) ) {
 			flush_rewrite_rules();
@@ -74,6 +106,11 @@ class SPTP_Bootstrap {
 		}
 	}
 
+	/**
+	 *
+	 *  Reset rules.
+	 *
+	 */
 	public function deactivation() {
 		$this->rewrite->reset_rewrite_rules();
 		flush_rewrite_rules();

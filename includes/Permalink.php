@@ -9,7 +9,14 @@
  */
 class SPTP_Permalink {
 
-	public function __construct() {
+	/** @var  SPTP_Option */
+	private $option;
+
+	public function __construct( SPTP_Option $option ) {
+		$this->option = $option;
+	}
+
+	public function add_hooks() {
 		add_filter( 'post_type_link', array( $this, 'post_type_link' ), 10, 2 );
 	}
 
@@ -24,18 +31,12 @@ class SPTP_Permalink {
 	 */
 	public function post_type_link( $post_link, WP_Post $post ) {
 
-		if ( ! SPTP_Option::get_structure( $post->post_type ) ) {
+		if ( ! $this->option->get_structure( $post->post_type ) ) {
 			return $post_link;
 		}
 
-		$rewritecode = [
-			"%{$post->post_type}_id%",
-		];
-
-		$rewritereplace = [
-			$post->ID,
-		];
-
+		$rewritecode = array( "%{$post->post_type}_id%", );
+		$rewritereplace = array( $post->ID, );
 		return str_replace( $rewritecode, $rewritereplace, $post_link );
 
 	}
