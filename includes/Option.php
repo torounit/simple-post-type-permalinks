@@ -23,8 +23,8 @@ class SPTP_Option {
 	public function get_structure( $post_type ) {
 		$post_type_object = get_post_type_object( $post_type );
 
-		if ( ! empty( $post_type_object->permalink_structure ) ) {
-			return $post_type_object->permalink_structure;
+		if ( ! empty( $post_type_object->sptp_permalink_structure ) ) {
+			return $post_type_object->sptp_permalink_structure;
 		}
 
 		return $this->get( "sptp_{$post_type}_structure" );
