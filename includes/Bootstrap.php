@@ -73,10 +73,10 @@ class SPTP_Bootstrap {
 	 */
 	private function load_modules() {
 
-		$this->option    = apply_filters( 'sptp_module_option', new SPTP_Option() );
-		$this->admin     = apply_filters( 'sptp_module_admin', new SPTP_Admin( $this->option ) );
-		$this->rewrite   = apply_filters( 'sptp_module_rewrite', new SPTP_Rewrite( $this->option ) );
-		$this->permalink = apply_filters( 'sptp_module_permalink', new SPTP_Permalink( $this->option ) );
+		$this->option    = apply_filters( 'sptp_module_option', new SPTP_Option(), $this );
+		$this->admin     = apply_filters( 'sptp_module_admin', new SPTP_Admin( $this->option ), $this );
+		$this->rewrite   = apply_filters( 'sptp_module_rewrite', new SPTP_Rewrite( $this->option ), $this );
+		$this->permalink = apply_filters( 'sptp_module_permalink', new SPTP_Permalink( $this->option ), $this );
 
 		$this->option->add_hooks();
 		$this->admin->add_hooks();
