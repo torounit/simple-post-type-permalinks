@@ -47,7 +47,9 @@ class SPTP_Rewrite {
 	}
 
 	/**
+	 *
 	 * Override Permastructs.
+	 *
 	 */
 	public function register_rewrite_rules() {
 		array_walk( $this->queue, array( $this, 'register_rewrite_rule' ) );
@@ -55,7 +57,9 @@ class SPTP_Rewrite {
 
 
 	/**
+	 *
 	 * @param array $param
+	 *
 	 */
 	public function register_rewrite_rule( Array $param ) {
 
@@ -86,12 +90,23 @@ class SPTP_Rewrite {
 
 
 	/**
+	 *
 	 * Reset Permastructs.
+	 *
 	 */
 	public function reset_rewrite_rules() {
 		array_walk( $this->queue, array( $this, 'reset_rewrite_rule' ) );
 	}
 
+
+	/**
+	 *
+	 * set default permastruct.
+	 * for deactivation.
+	 *
+	 * @param array $param
+	 *
+	 */
 	public function reset_rewrite_rule( $param ) {
 		$args      = $param['args'];
 		$post_type = $param['post_type'];
