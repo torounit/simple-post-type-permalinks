@@ -156,10 +156,10 @@ class SPTP_Admin {
 		global $wp_rewrite;
 		$front = '';
 		if ( $with_front ) {
-			$front = "<span class='front'>" . substr( $wp_rewrite->front, 1 ) . "</span>";
+			$front = "<span class='front'>" . esc_html(substr( $wp_rewrite->front, 1 )) . "</span>";
 		}
 
-		return $front . $string;
+		return $front . esc_html($string);
 	}
 
 
