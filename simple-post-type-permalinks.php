@@ -7,7 +7,7 @@
  * Plugin Name: Simple Post Type Permalinks
  * Plugin URI:  https://github.com/torounit/simple-post-type-permalinks
  * Description: Easy to change the custom post type of permlink.
- * Version:     0.1.0
+ * Version:     0.2.0
  * Author:      Toro_Unit
  * Author URI:  http://www.torounit.com
  * License:     GPLv2
@@ -26,13 +26,18 @@ $data = get_file_data( __FILE__, array( 'ver' => 'Version', 'lang_dir' => 'Domai
 define( 'SPTP_VER', $data['ver'] );
 define( 'SPTP_LANG_DIR', $data['lang_dir'] );
 
-require SPTP_PATH . '/includes/Option.php';
-require SPTP_PATH . '/includes/Rewrite.php';
-require SPTP_PATH . '/includes/Permalink.php';
-require SPTP_PATH . '/includes/Admin.php';
-require SPTP_PATH . '/includes/Bootstrap.php';
+if ( version_compare( phpversion(), '5.3', '>') ) {
+	require SPTP_PATH . '/includes/SPTP.php';
+}
+else {
+	add_action('admin_notices', 'sptp_admin_notices');
+}
+
+function sptp_admin_notices() {
+	echo '<div class="error"><p>[Simple Post Type Permalinks] Simple Post Type Permalinks requires PHP version 5.3 or higher.</p></div>';
+}
 
 
 
-$sptp = new SPTP_Bootstrap();
+
 

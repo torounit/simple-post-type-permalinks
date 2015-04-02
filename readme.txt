@@ -4,7 +4,7 @@ Donate link:       http://www.amazon.co.jp/registry/wishlist/COKSXS25MVQV
 Tags:               permalink,permalinks,custom post type,cms
 Requires at least: 4.1.1
 Tested up to:      4.2
-Stable tag:        0.1.0
+Stable tag:        0.2.0
 License:           GPLv2
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,6 +13,8 @@ Easy to change the custom post type of permlink.
 == Description ==
 
 Edit the permalink structure of custom post type too easy.
+
+Requires PHP version 5.3 or higher.
 
 [This Plugin published on GitHub.](https://github.com/torounit/simple-post-type-permalinks)
 
@@ -61,10 +63,16 @@ register_post_type( 'foo',
 
 == Changelog ==
 
+= 0.2.0 =
+* Drop PHP 5.2.
+
 = 0.1.0 =
 * First release
 
 == Upgrade Notice ==
+
+= 0.2.0 =
+* Drop PHP 5.2.
 
 = 0.1.0 =
 First Release

@@ -7,12 +7,15 @@
  * @package SPTP
  * @version 0.1.0
  */
-class SPTP_Admin {
 
-	/** @var  SPTP_Option */
+namespace SPTP;
+
+class Admin {
+
+	/** @var  Option */
 	private $option;
 
-	public function __construct( SPTP_Option $option ) {
+	public function __construct( Option $option ) {
 		$this->option = $option;
 	}
 
@@ -76,7 +79,7 @@ class SPTP_Admin {
 	 */
 	public function setting_field( $args ) {
 
-		global /** @var WP_Rewrite $wp_rewrite */
+		global /** @var \WP_Rewrite $wp_rewrite */
 		$wp_rewrite;
 		$slash = '';
 
@@ -162,7 +165,7 @@ class SPTP_Admin {
 	 */
 	private function create_permastruct( $string = "", $with_front = false ) {
 
-		/** @var WP_Rewrite $wp_rewrite */
+		/** @var \WP_Rewrite $wp_rewrite */
 		global $wp_rewrite;
 		$front = '';
 		if ( $with_front ) {

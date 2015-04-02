@@ -7,19 +7,21 @@
  * @package SPTP
  * @version 0.1.0
  */
-class SPTP_Bootstrap {
+namespace SPTP;
+
+class Bootstrap {
 
 
-	/** @var SPTP_Option */
+	/** @var Option */
 	private $option;
 
-	/** @var SPTP_Rewrite */
+	/** @var Rewrite */
 	private $rewrite;
 
-	/** @var SPTP_Admin */
+	/** @var Admin */
 	private $admin;
 
-	/** @var SPTP_Permalink */
+	/** @var Permalink */
 	private $permalink;
 
 	public function __construct() {
@@ -73,10 +75,10 @@ class SPTP_Bootstrap {
 	 */
 	private function load_modules() {
 
-		$this->option    = apply_filters( 'sptp_module_option', new SPTP_Option(), $this );
-		$this->admin     = apply_filters( 'sptp_module_admin', new SPTP_Admin( $this->option ), $this );
-		$this->rewrite   = apply_filters( 'sptp_module_rewrite', new SPTP_Rewrite( $this->option ), $this );
-		$this->permalink = apply_filters( 'sptp_module_permalink', new SPTP_Permalink( $this->option ), $this );
+		$this->option    = apply_filters( 'sptp_module_option', new Option(), $this );
+		$this->admin     = apply_filters( 'sptp_module_admin', new Admin( $this->option ), $this );
+		$this->rewrite   = apply_filters( 'sptp_module_rewrite', new Rewrite( $this->option ), $this );
+		$this->permalink = apply_filters( 'sptp_module_permalink', new Permalink( $this->option ), $this );
 
 		$this->option->add_hooks();
 		$this->admin->add_hooks();

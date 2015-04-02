@@ -7,7 +7,10 @@
  * @package SPTP
  * @version 0.1.0
  */
-class SPTP_Option {
+
+namespace SPTP;
+
+class Option {
 
 
 

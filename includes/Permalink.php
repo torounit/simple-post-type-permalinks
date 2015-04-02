@@ -7,12 +7,15 @@
  * @package SPTP
  * @version 0.1.0
  */
-class SPTP_Permalink {
 
-	/** @var  SPTP_Option */
+namespace SPTP;
+
+class Permalink {
+
+	/** @var  Option */
 	private $option;
 
-	public function __construct( SPTP_Option $option ) {
+	public function __construct( Option $option ) {
 		$this->option = $option;
 	}
 
@@ -25,11 +28,11 @@ class SPTP_Permalink {
 	 * Fix post_type permalink from postname to id.
 	 *
 	 * @param string $post_link The post's permalink.
-	 * @param WP_Post $post The post in question.
+	 * @param \WP_Post $post The post in question.
 	 *
 	 * @return string
 	 */
-	public function post_type_link( $post_link, WP_Post $post ) {
+	public function post_type_link( $post_link, \WP_Post $post ) {
 
 		if ( ! $this->option->get_structure( $post->post_type ) ) {
 			return $post_link;

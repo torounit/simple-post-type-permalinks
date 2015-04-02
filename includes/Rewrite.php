@@ -7,16 +7,19 @@
  * @package SPTP
  * @version 0.1.0
  */
-class SPTP_Rewrite {
+
+namespace SPTP;
+
+class Rewrite {
 
 
 	/** @var array */
 	private $queue;
 
-	/** @var  SPTP_Option */
+	/** @var  Option */
 	private $option;
 
-	public function __construct( SPTP_Option $option ) {
+	public function __construct( Option $option ) {
 		$this->option = $option;
 	}
 
