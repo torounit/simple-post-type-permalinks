@@ -83,6 +83,8 @@ class SPTP_Bootstrap {
 		$this->rewrite->add_hooks();
 		$this->permalink->add_hooks();
 
+		do_action('sptp_modules_loaded');
+
 	}
 
 	/**
