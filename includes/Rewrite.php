@@ -55,7 +55,10 @@ class Rewrite {
 	 *
 	 */
 	public function register_rewrite_rules() {
-		array_walk( $this->queue, array( $this, 'register_rewrite_rule' ) );
+
+		if( !empty( $this->queue ) ) {
+			array_walk( $this->queue, array( $this, 'register_rewrite_rule' ) );
+		}
 	}
 
 
