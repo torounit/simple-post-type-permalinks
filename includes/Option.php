@@ -23,11 +23,21 @@ class SPTP_Option {
 	public function get_structure( $post_type ) {
 		$post_type_object = get_post_type_object( $post_type );
 
-		if ( ! empty( $post_type_object->sptp_permalink_structure ) ) {
+		if ( $this->is_defined_structure( $post_type ) ) {
 			return $post_type_object->sptp_permalink_structure;
 		}
 
 		return $this->get( "sptp_{$post_type}_structure" );
+	}
+
+	/**
+	 * @param string $post_type
+	 *
+	 * @return bool
+	 */
+	public function is_defined_structure( $post_type ) {
+		$post_type_object = get_post_type_object( $post_type );
+		return ! empty( $post_type_object->sptp_permalink_structure );
 	}
 
 	/**
@@ -78,6 +88,7 @@ class SPTP_Option {
 
 					$new_options[ $key ] = trim( $new_options[ $key ], '/' );
 
+					unset( $new_options[ $select_key ] );
 					//If Empty set default.
 					if ( empty( $new_options[ $key ] ) ) {
 						$new_options[ $select_key ] = false;

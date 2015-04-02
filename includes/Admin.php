@@ -43,7 +43,8 @@ class SPTP_Admin {
 
 	public function setting_section() {
 		?>
-		<p>Select permalink setting.</p>
+		<p><?php _e('Select permalink setting.');?>
+		<?php _e('Available tags are only <code>%post_id%</code> and <code>%postname%</code>.');?></p>
 
 	<?php
 
@@ -62,9 +63,8 @@ class SPTP_Admin {
 			array( $this, 'setting_field' ),
 			'permalink',
 			'sptp_setting_section',
-			"sptp_{$post_type}_structure_select"
+			"sptp_{$post_type}_structure"
 		);
-		register_setting( 'permalink', "sptp_{$post_type}_structure_select" );
 		register_setting( 'permalink', "sptp_{$post_type}_structure" );
 	}
 
@@ -76,10 +76,20 @@ class SPTP_Admin {
 	 */
 	public function setting_field( $args ) {
 
-		$post_type        = preg_replace( '/sptp_(.+)_structure_select/', '$1', $args );
+		global /** @var WP_Rewrite $wp_rewrite */
+		$wp_rewrite;
+		$slash = '';
+
+		if($wp_rewrite->use_trailing_slashes) {
+			$slash = '/';
+		}
+
+		preg_match('/sptp_(.+)_structure/', $args, $matches);
+		$post_type = $matches[1];
 		$post_type_object = get_post_type_object( $post_type );
-		$select           = $this->option->get( $args );
+
 		$with_front       = $post_type_object->rewrite['with_front'];
+
 
 
 		$values = array(
@@ -91,55 +101,55 @@ class SPTP_Admin {
 
 
 		$permastruct = $this->option->get_structure( $post_type );
+
+
+		$disabled = $this->option->is_defined_structure( $post_type );
 		?>
 		<fieldset class="sptp-fieldset <?= ( $with_front ) ? 'with-front' : ''; ?>">
 			<?php
-			$this->input_rows( $args, $select, $values, $with_front );
+			$checked = false;
+			foreach ( $values as $value ):
+				if(! $checked ) {
+					$checked = ( $permastruct == $value );
+				}
+
+				$permalink = str_replace( array( '%postname%', '%post_id%' ), array( 'sample-post', '123' ), $value );
+				?>
+				<label>
+					<input type="radio" name="<?= esc_attr( $args ); ?>_select" value="<?= esc_attr( $value ) ?>"
+						<?php if( !$disabled ) checked( $permastruct, $value ); ?>
+						<?php disabled( $disabled );?>
+						/>
+					<?php
+					if ( $value ):?>
+						<code><?= home_url() . '/' . $this->create_permastruct( $permalink, $with_front ); ?><span class="slash"><?=$slash;?></span></code>
+					<?php
+					else: ?>
+						Default.
+					<?php
+					endif;?>
+
+				</label>
+				<br/>
+			<?php
+			endforeach;
 			?>
 			<label>
-				<input type="radio" name="<?= esc_attr( $args ); ?>" value="custom"
-					<?php checked( $select, 'custom' ); ?> />
+				<input type="radio" name="<?= esc_attr( $args ); ?>_select" value="custom"
+					<?php checked( $checked, false ); ?>
+					<?php disabled( $disabled );?> />
 				<code><?= home_url() . '/' . $this->create_permastruct( '', $with_front ); ?></code>
 
-				<input name="<?= esc_attr( "sptp_{$post_type}_structure" ); ?>"
+				<input class="regular-text code"
+				       name="<?= esc_attr( "sptp_{$post_type}_structure" ); ?>"
 				       id="<?= esc_attr( "sptp_{$post_type}_structure" ); ?>"
-				       type="text" value="<?= esc_attr( $permastruct ) ?>" class="regular-text code">
+				       type="text" value="<?= esc_attr( $permastruct ) ?>"
+					<?php disabled( $disabled );?>
+					/><span class="slash"><?=$slash;?></span>
 			</label>
 
 		</fieldset>
 	<?php
-	}
-
-	/**
-	 *
-	 * radio button.
-	 *
-	 * @param string $name
-	 * @param mixed $current
-	 * @param array $values
-	 * @param bool $with_front
-	 */
-	public function input_rows( $name, $current, $values, $with_front = false ) {
-		foreach ( $values as $value ):
-			$permalink = str_replace( array( '%postname%', '%post_id%' ), array( 'sample-post', '123' ), $value );
-			?>
-
-			<label>
-				<input type="radio" name="<?= esc_attr( $name ); ?>" value="<?= esc_attr( $value ) ?>"
-					<?php checked( $current, $value ); ?> />
-				<?php
-				if ( $value ):?>
-					<code><?= home_url() . '/' . $this->create_permastruct( $permalink, $with_front ); ?></code>
-				<?php
-				else: ?>
-					Default.
-				<?php
-				endif;?>
-
-			</label>
-			<br/>
-		<?php
-		endforeach;
 	}
 
 
