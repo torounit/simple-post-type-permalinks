@@ -8,7 +8,7 @@ Stable tag:        1.0.0
 License:           GPLv2
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
-Easy to change the custom post type of permlink.
+Easy to change Permalink of custom post type.
 
 == Description ==
 
