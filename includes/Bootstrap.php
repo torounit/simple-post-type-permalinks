@@ -85,7 +85,7 @@ class Bootstrap {
 		$this->rewrite->add_hooks();
 		$this->permalink->add_hooks();
 
-		do_action('sptp_modules_loaded');
+		do_action( 'sptp_modules_loaded' );
 
 	}
 

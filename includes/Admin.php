@@ -46,8 +46,8 @@ class Admin {
 
 	public function setting_section() {
 		?>
-		<p><?php _e('Select permalink setting.');?>
-		<?php _e('Available tags are only <code>%post_id%</code> and <code>%postname%</code>.');?></p>
+		<p><?php _e( 'Select permalink setting.' ); ?>
+			<?php _e( 'Available tags are only <code>%post_id%</code> and <code>%postname%</code>.' ); ?></p>
 
 	<?php
 
@@ -83,51 +83,51 @@ class Admin {
 		$wp_rewrite;
 		$slash = '';
 
-		if($wp_rewrite->use_trailing_slashes) {
+		if ( $wp_rewrite->use_trailing_slashes ) {
 			$slash = '/';
 		}
 
-		preg_match('/sptp_(.+)_structure/', $args, $matches);
-		$post_type = $matches[1];
+		preg_match( '/sptp_(.+)_structure/', $args, $matches );
+		$post_type        = $matches[1];
 		$post_type_object = get_post_type_object( $post_type );
 
-		$with_front       = $post_type_object->rewrite['with_front'];
-
-
+		$with_front = $post_type_object->rewrite['with_front'];
 
 		$values = array(
 			false,
 			"{$post_type_object->rewrite['slug']}/%post_id%",
 			"{$post_type_object->rewrite['slug']}/%postname%.html",
-			"{$post_type_object->rewrite['slug']}/%post_id%.html"
+			"{$post_type_object->rewrite['slug']}/%post_id%.html",
 		);
-
 
 		$permastruct = $this->option->get_structure( $post_type );
 
-
 		$disabled = $this->option->is_defined_structure( $post_type );
 		?>
-		<fieldset class="sptp-fieldset <?= ( $with_front ) ? 'with-front' : ''; ?>">
+		<fieldset class="sptp-fieldset <?php echo ( $with_front ) ? 'with-front' : ''; ?>">
 			<?php
 			$checked = false;
-			foreach ( $values as $value ):
-				if(! $checked ) {
+			foreach ( $values as $value ) :
+				if ( ! $checked ) {
 					$checked = ( $permastruct == $value );
 				}
 
 				$permalink = str_replace( array( '%postname%', '%post_id%' ), array( 'sample-post', '123' ), $value );
 				?>
 				<label>
-					<input type="radio" name="<?= esc_attr( $args ); ?>_select" value="<?= esc_attr( $value ) ?>"
-						<?php if( !$disabled ) checked( $permastruct, $value ); ?>
+					<input type="radio" name="<?php echo esc_attr( $args ); ?>_select" value="<?php echo esc_attr( $value ) ?>"
+						<?php
+						if ( ! $disabled ) {
+							checked( $permastruct, $value );
+						} ?>
 						<?php disabled( $disabled );?>
 						/>
 					<?php
-					if ( $value ):?>
-						<code><?= home_url() . '/' . $this->create_permastruct( $permalink, $with_front ); ?><span class="slash"><?=$slash;?></span></code>
+					if ( $value ) :?>
+						<code><?php echo esc_html( home_url() . '/' . $this->create_permastruct( $permalink, $with_front ) ); ?><span
+								class="slash"><?php echo esc_attr( $slash ); ?></span></code>
 					<?php
-					else: ?>
+					else : ?>
 						Default.
 					<?php
 					endif;?>
@@ -138,17 +138,17 @@ class Admin {
 			endforeach;
 			?>
 			<label>
-				<input type="radio" name="<?= esc_attr( $args ); ?>_select" value="custom"
+				<input type="radio" name="<?php echo esc_attr( $args ); ?>_select" value="custom"
 					<?php checked( $checked, false ); ?>
-					<?php disabled( $disabled );?> />
-				<code><?= home_url() . '/' . $this->create_permastruct( '', $with_front ); ?></code>
+					<?php disabled( $disabled ); ?> />
+				<code><?php echo esc_html( home_url() . '/' . $this->create_permastruct( '', $with_front ) ); ?></code>
 
 				<input class="regular-text code"
-				       name="<?= esc_attr( "sptp_{$post_type}_structure" ); ?>"
-				       id="<?= esc_attr( "sptp_{$post_type}_structure" ); ?>"
-				       type="text" value="<?= esc_attr( $permastruct ) ?>"
-					<?php disabled( $disabled );?>
-					/><span class="slash"><?=$slash;?></span>
+				       name="<?php echo esc_attr( "sptp_{$post_type}_structure" ); ?>"
+				       id="<?php echo esc_attr( "sptp_{$post_type}_structure" ); ?>"
+				       type="text" value="<?php echo esc_attr( $permastruct ) ?>"
+					<?php disabled( $disabled ); ?>
+					/><span class="slash"><?php echo esc_html( $slash ); ?></span>
 			</label>
 
 		</fieldset>
@@ -163,16 +163,16 @@ class Admin {
 	 *
 	 * @return string
 	 */
-	private function create_permastruct( $string = "", $with_front = false ) {
+	private function create_permastruct( $string = '', $with_front = false ) {
 
 		/** @var \WP_Rewrite $wp_rewrite */
 		global $wp_rewrite;
 		$front = '';
 		if ( $with_front ) {
-			$front = "<span class='front'>" . esc_html(substr( $wp_rewrite->front, 1 )) . "</span>";
+			$front = '<span class="front">' . esc_html( substr( $wp_rewrite->front, 1 ) ) . '</span>';
 		}
 
-		return $front . esc_html($string);
+		return $front . esc_html( $string );
 	}
 
 
