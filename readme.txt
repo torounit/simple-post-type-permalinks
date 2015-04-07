@@ -65,6 +65,9 @@ register_post_type( 'foo',
 
 == Changelog ==
 
+= 1.0.2 =
+* Coding Standard Fix.
+
 = 1.0.0 =
 * Drop PHP 5.2.
 
