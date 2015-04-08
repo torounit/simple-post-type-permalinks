@@ -4,7 +4,7 @@ Donate link:       http://www.amazon.co.jp/registry/wishlist/COKSXS25MVQV
 Tags:              permalink,permalinks,custom post type,cms
 Requires at least: 4.1
 Tested up to:      4.2
-Stable tag:        1.0.2
+Stable tag:        1.0.3
 License:           GPLv2 or Later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,6 +64,9 @@ register_post_type( 'foo',
 * screenshot-1.png
 
 == Changelog ==
+
+= 1.0.3 =
+* Admin Bug Fix.
 
 = 1.0.2 =
 * Coding Standard Fix.
