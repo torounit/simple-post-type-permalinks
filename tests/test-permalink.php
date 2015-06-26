@@ -32,7 +32,7 @@ class SPTP_Permalink_Test extends WP_UnitTestCase {
 	 * @group permalink
 	 * @dataProvider structure_provider
 	 */
-	public function get_permalink( $structure ) {
+	public function test_permalink( $structure ) {
 
 
 		$post_type = rand_str(12);
@@ -59,6 +59,38 @@ class SPTP_Permalink_Test extends WP_UnitTestCase {
 
 		$this->go_to(get_comments_pagenum_link( 2 ) );
 		$this->assertEquals( get_query_var( "cpage"), 2 );
+
+	}
+
+	/**
+	 * @test
+	 * @group permalink
+	 */
+	public function test_post_type_link() {
+
+
+		$post_type = rand_str(12);
+		$slug = rand_str(12);
+		register_post_type( $post_type,
+			array(
+				"public"     => true,
+				"permalink_structure" => $slug.'/%post_id%',
+				"has_archive" => true
+			)
+		);
+
+		$id = $this->factory->post->create( array( 'post_type' => $post_type ) );
+
+		do_action('wp_loaded');//fire SPTP_Rewrite::register_rewrite_rules
+		/** @var WP_Rewrite $wp_rewrite */
+		global $wp_rewrite;
+		$wp_rewrite->flush_rules();
+
+		$this->assertEquals( home_url( $slug ), get_post_type_archive_link( $post_type ) );
+
+		$this->assertQueryTrue( "is_archive"  );
+		$this->assertEquals( $post_type, get_post_type() );
+
 
 	}
 }
