@@ -50,11 +50,10 @@ class Rewrite {
 			'args'      => $args,
 		);
 
-		if( $slug = $this->option->get_front_struct( $post_type ) ) {
-			if( is_array( $wp_post_types[ $post_type ]->rewrite ) ) {
+		if ( $slug = $this->option->get_front_struct( $post_type ) ) {
+			if ( is_array( $wp_post_types[ $post_type ]->rewrite ) ) {
 				$wp_post_types[ $post_type ]->rewrite['slug'] = $slug;
 			}
-
 		}
 
 	}
@@ -78,7 +77,6 @@ class Rewrite {
 	 *
 	 */
 	public function register_rewrite_rule( Array $param ) {
-
 
 		if ( '' == get_option( 'permalink_structure' ) ) {
 			return;
@@ -106,10 +104,9 @@ class Rewrite {
 			$slug = $this->option->get_front_struct( $post_type );
 
 			if ( $slug ) {
-				add_rewrite_rule( "$slug/page/?([0-9]{1,})/?$", "index.php?paged=\$matches[1]&post_type=$post_type", "top" );
-				add_rewrite_rule( "$slug/?$", "index.php?post_type=$post_type", "top" );
+				add_rewrite_rule( "$slug/page/?([0-9]{1,})/?$", "index.php?paged=\$matches[1]&post_type=$post_type", 'top' );
+				add_rewrite_rule( "$slug/?$", "index.php?post_type=$post_type", 'top' );
 			}
-
 		}
 	}
 

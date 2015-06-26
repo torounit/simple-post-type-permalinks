@@ -19,10 +19,10 @@ class SPTP_Permalink_Test extends WP_UnitTestCase {
 
 	public function structure_provider() {
 		return array(
-			array("%post_id%"),
-			array("%postname%"),
-			array("%post_id%.html"),
-			array("%postname%.html"),
+			array( "%post_id%" ),
+			array( "%postname%" ),
+			array( "%post_id%.html" ),
+			array( "%postname%.html" ),
 		);
 	}
 
@@ -35,17 +35,17 @@ class SPTP_Permalink_Test extends WP_UnitTestCase {
 	public function test_permalink( $structure ) {
 
 
-		$post_type = rand_str(12);
+		$post_type = rand_str( 12 );
 		register_post_type( $post_type,
 			array(
-				"public"     => true,
-				"sptp_permalink_structure" => $post_type.'/'.$structure,
+				"public"                   => true,
+				"sptp_permalink_structure" => $post_type . '/' . $structure,
 			)
 		);
 
 		$id = $this->factory->post->create( array( 'post_type' => $post_type ) );
 
-		do_action('wp_loaded');//fire SPTP_Rewrite::register_rewrite_rules
+		do_action( 'wp_loaded' );//fire SPTP_Rewrite::register_rewrite_rules
 		/** @var WP_Rewrite $wp_rewrite */
 		global $wp_rewrite;
 		$wp_rewrite->flush_rules();
@@ -60,13 +60,13 @@ class SPTP_Permalink_Test extends WP_UnitTestCase {
 	 */
 	public function test_post_type_link() {
 
-		$post_type = rand_str(12);
-		$slug = rand_str(12);
+		$post_type = rand_str( 12 );
+		$slug      = rand_str( 12 );
 		register_post_type( $post_type,
 			array(
-				"public"     => true,
-				"sptp_permalink_structure" => $slug.'/%post_id%',
-				"has_archive" => true
+				"public"                   => true,
+				"sptp_permalink_structure" => $slug . '/%post_id%',
+				"has_archive"              => true
 			)
 		);
 

@@ -93,8 +93,8 @@ class Admin {
 		$post_type_object = get_post_type_object( $post_type );
 
 		$with_front = $post_type_object->rewrite['with_front'];
-		$slug = trim( $post_type_object->rewrite['slug'], '/');
-		$values = array(
+		$slug       = trim( $post_type_object->rewrite['slug'], '/' );
+		$values     = array(
 			false,
 			"{$slug}/%post_id%",
 			"{$slug}/%postname%.html",
@@ -116,7 +116,8 @@ class Admin {
 				$permalink = str_replace( array( '%postname%', '%post_id%' ), array( 'sample-post', '123' ), $value );
 				?>
 				<label>
-					<input type="radio" name="<?php echo esc_attr( $args ); ?>_select" value="<?php echo esc_attr( $value ) ?>"
+					<input type="radio" name="<?php echo esc_attr( $args ); ?>_select"
+					       value="<?php echo esc_attr( $value ) ?>"
 						<?php
 						if ( ! $disabled ) {
 							checked( $permastruct, $value );
@@ -125,7 +126,8 @@ class Admin {
 						/>
 					<?php
 					if ( $value ) :?>
-						<code><?php echo esc_html( home_url() ) . '/' . $this->create_permastruct( $permalink, $with_front ); ?><span
+						<code><?php echo esc_html( home_url() ) . '/' . $this->create_permastruct( $permalink, $with_front ); ?>
+							<span
 								class="slash"><?php echo esc_attr( $slash ); ?></span></code>
 					<?php
 					else : ?>
@@ -142,7 +144,7 @@ class Admin {
 				<input type="radio" name="<?php echo esc_attr( $args ); ?>_select" value="custom"
 					<?php checked( $checked, false ); ?>
 					<?php disabled( $disabled ); ?> />
-				<code><?php echo esc_html( home_url() ). '/' . $this->create_permastruct( '', $with_front ) ; ?></code>
+				<code><?php echo esc_html( home_url() ) . '/' . $this->create_permastruct( '', $with_front ); ?></code>
 
 				<input class="regular-text code"
 				       name="<?php echo esc_attr( "sptp_{$post_type}_structure" ); ?>"
