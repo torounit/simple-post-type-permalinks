@@ -92,6 +92,15 @@ class Rewrite {
 			$struct  = str_replace( $search, $replace, $struct );
 
 			add_permastruct( $post_type, $struct, $permastruct_args );
+
+			$slug = $this->option->get_front_struct( $post_type );
+
+			if( $slug ) {
+				add_rewrite_rule( "$slug/page/?([0-9]{1,})/?$", "index.php?paged=\$matches[1]&post_type=$post_type", "top" );
+				add_rewrite_rule( "$slug/?$", "index.php?post_type=$post_type", "top" );
+			}
+
+
 		}
 	}
 

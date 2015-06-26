@@ -33,6 +33,12 @@ class Option {
 		return $this->get( "sptp_{$post_type}_structure" );
 	}
 
+	public function get_front_struct( $post_type ) {
+		$structure = $this->get_structure( $post_type );
+
+		return trim( mb_substr($structure, 0, mb_strpos( $structure, '%') ), '/');
+	}
+
 	/**
 	 * @param string $post_type
 	 *
