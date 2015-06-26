@@ -93,12 +93,12 @@ class Admin {
 		$post_type_object = get_post_type_object( $post_type );
 
 		$with_front = $post_type_object->rewrite['with_front'];
-
+		$slug = trim( $post_type_object->rewrite['slug'], '/');
 		$values = array(
 			false,
-			"{$post_type_object->rewrite['slug']}/%post_id%",
-			"{$post_type_object->rewrite['slug']}/%postname%.html",
-			"{$post_type_object->rewrite['slug']}/%post_id%.html",
+			"{$slug}/%post_id%",
+			"{$slug}/%postname%.html",
+			"{$slug}/%post_id%.html",
 		);
 
 		$permastruct = $this->option->get_structure( $post_type );
