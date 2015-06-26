@@ -68,24 +68,33 @@ class Rewrite {
 	public function register_rewrite_rules() {
 
 		if ( ! empty( $this->queue ) ) {
-			array_walk( $this->queue, array( $this, 'register_rewrite_rule' ) );
+			array_walk( $this->queue, array( $this, 'register_rewrite_rule_adapter' ) );
 		}
 	}
-
 
 	/**
 	 *
 	 * @param array $param
 	 *
 	 */
-	public function register_rewrite_rule( Array $param ) {
+	public function register_rewrite_rule_adapter( Array $param ) {
+		$args      = $param['args'];
+		$post_type = $param['post_type'];
+		$this->register_rewrite_rule( $post_type, $args );
+	}
+
+
+	/**
+	 * after a post type is registered.
+	 *
+	 * @param string $post_type Post type.
+	 * @param object $args Arguments used to register the post type.
+	 */
+	public function register_rewrite_rule( $post_type, $args ) {
 
 		if ( '' == get_option( 'permalink_structure' ) ) {
 			return;
 		}
-
-		$args      = $param['args'];
-		$post_type = $param['post_type'];
 
 		$permastruct_args         = $args->rewrite;
 		$permastruct_args['feed'] = $permastruct_args['feeds'];
