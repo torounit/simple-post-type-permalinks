@@ -35,7 +35,10 @@ class Option {
 
 	public function get_front_struct( $post_type ) {
 		$structure = $this->get_structure( $post_type );
+		return $this->extract_front_struct( $structure );
+	}
 
+	public function extract_front_struct( $structure ) {
 		return trim( mb_substr($structure, 0, mb_strpos( $structure, '%') ), '/');
 	}
 
