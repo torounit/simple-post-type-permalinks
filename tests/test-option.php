@@ -25,7 +25,7 @@ class SPTP_Option_Test extends WP_UnitTestCase {
 		$post_type = rand_str( 12 );
 
 		update_option( 'sptp_options', array(
-			"sptp_{$post_type}_structure" => "{$post_type}/%post_id%.html"
+			"sptp_{$post_type}_structure" => "{$post_type}/%post_id%.html",
 		) );
 
 		$this->assertEquals( $this->option->get_structure( $post_type ), "{$post_type}/%post_id%.html" );
@@ -41,13 +41,13 @@ class SPTP_Option_Test extends WP_UnitTestCase {
 
 		$post_type = rand_str( 12 );
 		update_option( 'sptp_options', array(
-			"sptp_{$post_type}_structure" => "{$post_type}/%post_id%.html"
+			"sptp_{$post_type}_structure" => "{$post_type}/%post_id%.html",
 		) );
 
 		register_post_type( $post_type,
 			array(
-				"public"                   => true,
-				"sptp_permalink_structure" => "{$post_type}/%post_id%",
+				'public'                   => true,
+				'sptp_permalink_structure' => "{$post_type}/%post_id%",
 			)
 		);
 

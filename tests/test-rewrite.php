@@ -19,10 +19,10 @@ class SPTP_Rewrite_Test extends WP_UnitTestCase {
 
 	public function structure_provider() {
 		return array(
-			array( "%post_id%" ),
-			array( "%postname%" ),
-			array( "%post_id%.html" ),
-			array( "%postname%.html" ),
+			array( '%post_id%' ),
+			array( '%postname%' ),
+			array( '%post_id%.html' ),
+			array( '%postname%.html' ),
 		);
 	}
 
@@ -34,12 +34,11 @@ class SPTP_Rewrite_Test extends WP_UnitTestCase {
 	 */
 	public function test_permalink( $structure ) {
 
-
 		$post_type = rand_str( 12 );
 		register_post_type( $post_type,
 			array(
-				"public"                   => true,
-				"sptp_permalink_structure" => $post_type . '/' . $structure,
+				'public'                   => true,
+				'sptp_permalink_structure' => $post_type . '/' . $structure,
 			)
 		);
 
@@ -51,14 +50,13 @@ class SPTP_Rewrite_Test extends WP_UnitTestCase {
 		global $wp_rewrite;
 		$wp_rewrite->flush_rules();
 
-
 		$this->go_to( get_permalink( $id ) );
 
-		$this->assertQueryTrue( "is_single", "is_singular" );
+		$this->assertQueryTrue( 'is_single', 'is_singular' );
 		$this->assertEquals( $post_type, get_post_type() );
 
 		$this->go_to( get_comments_pagenum_link( 2 ) );
-		$this->assertEquals( get_query_var( "cpage" ), 2 );
+		$this->assertEquals( get_query_var( 'cpage' ), 2 );
 
 	}
 
@@ -68,14 +66,13 @@ class SPTP_Rewrite_Test extends WP_UnitTestCase {
 	 */
 	public function test_post_type_link() {
 
-
 		$post_type = rand_str( 12 );
 		$slug      = rand_str( 12 );
 		register_post_type( $post_type,
 			array(
-				"public"                   => true,
-				"sptp_permalink_structure" => $slug . '/%post_id%',
-				"has_archive"              => true
+				'public'                   => true,
+				'sptp_permalink_structure' => $slug . '/%post_id%',
+				'has_archive'              => true,
 			)
 		);
 
@@ -88,7 +85,6 @@ class SPTP_Rewrite_Test extends WP_UnitTestCase {
 		$this->go_to( get_post_type_archive_link( $post_type ) );
 		$this->assertQueryTrue( 'is_post_type_archive', 'is_archive' );
 		$this->assertEquals( $post_type, get_post_type() );
-
 
 	}
 }

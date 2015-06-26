@@ -19,10 +19,10 @@ class SPTP_Permalink_Test extends WP_UnitTestCase {
 
 	public function structure_provider() {
 		return array(
-			array( "%post_id%" ),
-			array( "%postname%" ),
-			array( "%post_id%.html" ),
-			array( "%postname%.html" ),
+			array( '%post_id%' ),
+			array( '%postname%' ),
+			array( '%post_id%.html' ),
+			array( '%postname%.html' ),
 		);
 	}
 
@@ -34,12 +34,11 @@ class SPTP_Permalink_Test extends WP_UnitTestCase {
 	 */
 	public function test_permalink( $structure ) {
 
-
 		$post_type = rand_str( 12 );
 		register_post_type( $post_type,
 			array(
-				"public"                   => true,
-				"sptp_permalink_structure" => $post_type . '/' . $structure,
+				'public'                   => true,
+				'sptp_permalink_structure' => $post_type . '/' . $structure,
 			)
 		);
 
@@ -64,13 +63,12 @@ class SPTP_Permalink_Test extends WP_UnitTestCase {
 		$slug      = rand_str( 12 );
 		register_post_type( $post_type,
 			array(
-				"public"                   => true,
-				"sptp_permalink_structure" => $slug . '/%post_id%',
-				"has_archive"              => true
+				'public'                   => true,
+				'sptp_permalink_structure' => $slug . '/%post_id%',
+				'has_archive'              => true,
 			)
 		);
 
 		$this->assertEquals( home_url( $slug ), get_post_type_archive_link( $post_type ) );
-
 	}
 }
