@@ -52,7 +52,7 @@ class Rewrite {
 
 		if ( $slug = $this->option->get_front_struct( $post_type ) ) {
 			if ( is_array( $wp_post_types[ $post_type ]->rewrite ) ) {
-				$wp_post_types[ $post_type ]->rewrite['slug'] = $slug;
+				//$wp_post_types[ $post_type ]->rewrite['slug'] = $slug;
 			}
 		}
 
