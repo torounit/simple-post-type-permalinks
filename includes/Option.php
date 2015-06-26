@@ -6,7 +6,7 @@
  *
  * @package SPTP
  * @since   0.1.0
- * @version 1.0.2
+ *
  */
 
 namespace SPTP;
