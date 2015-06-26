@@ -94,6 +94,9 @@ class Admin {
 
 		$with_front = $post_type_object->rewrite['with_front'];
 		$slug       = trim( $post_type_object->rewrite['slug'], '/' );
+		if( !empty( $post_type_object->rewrite['original_slug'] ) ) {
+			$slug = trim( $post_type_object->rewrite['original_slug'], '/' );
+		}
 		$values     = array(
 			false,
 			"{$slug}/%post_id%",
