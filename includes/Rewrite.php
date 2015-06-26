@@ -99,6 +99,7 @@ class Rewrite {
 	/**
 	 *
 	 * Reset Permastructs.
+	 * for deactivation.
 	 *
 	 */
 	public function reset_rewrite_rules() {
