@@ -21,8 +21,19 @@ class Permalink {
 	}
 
 	public function add_hooks() {
-		add_filter( 'post_type_link', array( $this, 'post_type_link' ), 10, 2 );
-		add_filter( 'post_type_archive_link', array( $this, 'post_type_archive_link' ), 10, 2 );
+		$post_type_link_priority         = apply_filters( 'sptp_post_type_link_priority', 10 );
+		$post_type_archive_link_priority = apply_filters( 'sptp_post_type_archive_link_priority', 10 );
+
+		add_filter(
+			'post_type_link', array(
+			$this,
+			'post_type_link'
+		), $post_type_link_priority, 2 );
+
+		add_filter( 'post_type_archive_link', array(
+			$this,
+			'post_type_archive_link'
+		), $post_type_archive_link_priority, 2 );
 	}
 
 	/**
