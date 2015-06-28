@@ -2,7 +2,7 @@
 Contributors:      Toro_Unit
 Donate link:       http://www.amazon.co.jp/registry/wishlist/COKSXS25MVQV
 Tags:              permalink,permalinks,custom post type,cms
-Requires at least: 4.1
+Requires at least: 4.0
 Tested up to:      4.2
 Stable tag:        1.1.0
 License:           GPLv2 or Later
