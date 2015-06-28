@@ -66,7 +66,7 @@ register_post_type( 'foo',
 == Changelog ==
 
 = 1.1.0 =
-* Test with WooCommerce.
+* Test with WooCommerce and WPML.
 * Admin Bug Fix.
 * Support `get_post_type_archive`.
 
