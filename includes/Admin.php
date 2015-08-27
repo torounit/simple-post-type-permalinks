@@ -129,8 +129,7 @@ class Admin {
 						/>
 					<?php
 					if ( $value ) :?>
-						<code><?php echo esc_html( home_url() ) . '/' . $this->create_permastruct( $permalink, $with_front ); ?>
-							<span
+						<code><?php echo esc_html( home_url() ) . '/' . $this->create_permastruct( $permalink, $with_front ); ?><span
 								class="slash"><?php echo esc_attr( $slash ); ?></span></code>
 					<?php
 					else : ?>
