@@ -15,12 +15,11 @@ WP_TESTS_DIR=${WP_TESTS_DIR-/tmp/wordpress-tests-lib}
 WP_CORE_DIR=${WP_CORE_DIR-/tmp/wordpress/}
 
 
-if [ $WP_VERSION == 'latest' ]; then
-    WP_TESTS_BLANCH='trunk'
-else
+if [[ $WP_VERSION =~ [0-9]+\.[0-9]+(\.[0-9]+)? ]]; then
     WP_TESTS_BLANCH="tags/$WP_VERSION"
+else
+    WP_TESTS_BLANCH='trunk'
 fi
-
 
 
 set -ex
