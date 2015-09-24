@@ -18,7 +18,7 @@ WP_CORE_DIR=${WP_CORE_DIR-/tmp/wordpress/}
 if [ $WP_VERSION == 'latest' ]; then
     WP_TESTS_BLANCH='trunk'
 else
-    WP_TESTS_BLANCH ="tags/$WP_VERSION"
+    WP_TESTS_BLANCH="tags/$WP_VERSION"
 fi
 
 
