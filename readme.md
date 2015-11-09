@@ -1,16 +1,19 @@
-=== Simple Post Type Permalinks ===
-Contributors:      Toro_Unit
+# Simple Post Type Permalinks
 Donate link:       http://www.amazon.co.jp/registry/wishlist/COKSXS25MVQV
-Tags:              permalink,permalinks,custom post type,cms
-Requires at least: 4.0
-Tested up to:      4.3
-Stable tag:        1.1.0
 License:           GPLv2 or Later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
 Easy to change Permalink of custom post type.
 
-== Description ==
+
+[![Build Status](https://travis-ci.org/torounit/simple-post-type-permalinks.svg)](https://travis-ci.org/torounit/simple-post-type-permalinks)
+[![](https://img.shields.io/wordpress/plugin/dt/simple-post-type-permalinks.svg)](https://wordpress.org/plugins/simple-post-type-permalinks/)
+[![](https://img.shields.io/wordpress/v/simple-post-type-permalinks.svg)](https://wordpress.org/plugins/simple-post-type-permalinks/)
+[![](https://img.shields.io/wordpress/plugin/r/simple-post-type-permalinks.svg)](https://wordpress.org/plugins/simple-post-type-permalinks/)
+
+[![](http://www.torounit.com/wp-content/uploads/2015/04/banner-1544x5001.png)](https://wordpress.org/plugins/simple-post-type-permalinks/)
+
+## Description
 
 Edit the permalink structure of custom post type too easy.
 
@@ -24,23 +27,23 @@ Please Fork and Pull Request!
 
 
 
-== Installation ==
+## Installation
 
-= Manual Installation =
+### Manual Installation
 
 1. Upload the entire `/simple-post-type-permalinks` directory to the `/wp-content/plugins/` directory.
 2. Activate Simple Post Type Permalinks through the 'Plugins' menu in WordPress.
 
 Access the permalinks setting by going to *Settings -> Permalinks*.
 
-== Frequently Asked Questions ==
+## Frequently Asked Questions
 
-= Which tag that can be used? =
+### Which tag that can be used?
 
 Only `%post_id%` and `%postname%`.
 
 
-== Setting on Code ==
+## Setting on Code
 
 
 Example:
@@ -59,34 +62,40 @@ register_post_type( 'foo',
 `
 
 
-== Screenshots ==
+## Screenshots
 
 * screenshot-1.png
 
-== Changelog ==
+## Changelog
 
-= 1.1.0 =
+### 1.1.0
+
 * Test with WooCommerce and WPML.
 * Admin Bug Fix.
 * Support `get_post_type_archive`.
 
 
-= 1.0.3 =
+### 1.0.3
+
 * Admin Bug Fix.
 
-= 1.0.2 =
+### 1.0.2
+
 * Coding Standard Fix.
 
-= 1.0.0 =
+### 1.0.0
+
 * Drop PHP 5.2.
 
-= 0.1.0 =
+### 0.1.0
+
 * First release
 
-== Upgrade Notice ==
+## Upgrade Notice
 
-= 1.0.0 =
+### 1.0.0
+
 * Drop PHP 5.2.
 
-= 0.1.0 =
+### 0.1.0
 First Release
