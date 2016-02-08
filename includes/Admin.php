@@ -29,7 +29,7 @@ class Admin {
 	public function admin_fields() {
 
 		add_settings_section( 'sptp_setting_section',
-			__( 'Custom Post Type Permalink Settings', 'sptp' ),
+			__( 'Custom Post Type Permalink Settings', SPTP_TEXT_DOMAIN ),
 			array( $this, 'setting_section' ),
 			'permalink'
 		);

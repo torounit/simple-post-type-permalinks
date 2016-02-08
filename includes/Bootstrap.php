@@ -62,8 +62,6 @@ class Bootstrap {
 	 */
 	public function plugins_loaded() {
 
-		load_plugin_textdomain( 'sptp', false, dirname( plugin_basename( SPTP_FILE ) ) . SPTP_LANG_DIR );
-
 		$this->load_modules();
 
 	}

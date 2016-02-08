@@ -68,6 +68,10 @@ register_post_type( 'foo',
 
 ## Changelog
 
+### 1.2.0
+
+* fix textdomain.
+
 ### 1.1.0
 
 * Test with WooCommerce and WPML.
