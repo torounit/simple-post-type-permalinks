@@ -3,8 +3,8 @@ Contributors:      Toro_Unit
 Donate link:       http://www.amazon.co.jp/registry/wishlist/COKSXS25MVQV
 Tags:              permalink,permalinks,custom post type,cms
 Requires at least: 4.0
-Tested up to:      4.3
-Stable tag:        1.2.0
+Tested up to:      4.5
+Stable tag:        1.2.1
 License:           GPLv2 or Later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
