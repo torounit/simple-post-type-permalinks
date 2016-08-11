@@ -146,4 +146,8 @@ class Option extends Module {
 		return $extracted;
 	}
 
+	public function uninstall() {
+		delete_option( 'sptp_options' );
+	}
+
 }

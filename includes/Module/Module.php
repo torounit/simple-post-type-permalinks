@@ -22,4 +22,16 @@ abstract class Module {
 	}
 
 	abstract public function add_hooks();
+
+	public function deactivate() {
+
+	}
+
+	public function activate() {
+
+	}
+
+	public function uninstall() {
+
+	}
 }

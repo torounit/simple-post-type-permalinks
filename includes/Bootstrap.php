@@ -10,6 +10,7 @@
  */
 namespace SPTP;
 
+use SPTP\Module\Flusher;
 use SPTP\Module\Module;
 use SPTP\Module\Admin;
 use SPTP\Module\Permalink;
@@ -20,19 +21,6 @@ class Bootstrap {
 
 	/** @var Module[] */
 	private $modules;
-
-
-	/** @var Option */
-	private $option;
-
-	/** @var Rewrite */
-	private $rewrite;
-
-	/** @var Admin */
-	private $admin;
-
-	/** @var Permalink */
-	private $permalink;
 
 	public function __construct() {
 
@@ -50,19 +38,15 @@ class Bootstrap {
 	 *
 	 */
 	private function setup() {
-		register_activation_hook( SPTP_FILE, array( $this, 'queue_flush_rewrite_rules' ) );
-		register_deactivation_hook( SPTP_FILE, array( $this, 'deactivation' ) );
-		register_uninstall_hook( SPTP_FILE, array( __CLASS__, 'uninstall' ) );
+		register_activation_hook( SPTP_FILE, array( $this, 'activation_action' ) );
+		register_deactivation_hook( SPTP_FILE, array( $this, 'deactivation_action' ) );
+		$this->register_uninstall_hook();
 	}
 
-	/**
-	 *
-	 * Delete SPTP options.
-	 *
-	 */
-	public static function uninstall() {
-		delete_option( 'sptp_queue_flush_rewrite_rules' );
-		delete_option( 'sptp_options' );
+	private function register_uninstall_hook() {
+		register_activation_hook( SPTP_FILE, function() {
+			register_uninstall_hook( SPTP_FILE, array( __CLASS__, 'uninstall' ) );
+		});
 	}
 
 	/**
@@ -76,7 +60,6 @@ class Bootstrap {
 
 	}
 
-
 	/**
 	 *
 	 * Load Plugin modules.
@@ -87,7 +70,7 @@ class Bootstrap {
 		do_action( 'sptp_before_load_modules' );
 
 		$classes = $this->get_module_classes();
-		$this->modules = $this->init_modules( $classes );
+		$this->init_modules( $classes );
 
 		do_action( 'sptp_after_load_modules' );
 
@@ -97,32 +80,32 @@ class Bootstrap {
 	/**
 	 * @return array
 	 */
-	private function get_module_classes( ) {
+	private function get_module_classes() {
 		$base_classes = array(
-			'option' =>    Option::get_class(),
-			'admin'  =>    Admin::get_class(),
-			'rewrite' =>   Rewrite::get_class(),
+			'option'    => Option::get_class(),
+			'admin'     => Admin::get_class(),
+			'rewrite'   => Rewrite::get_class(),
 			'permalink' => Permalink::get_class(),
+			'flusher'   => Flusher::get_class(),
 		);
 
 		$classes = array();
 		foreach ( $base_classes as $key => $class ) {
 			$classes[ $key ] = apply_filters( "sptp_module_${key}_class", $class::get_class() );
 		}
+
 		return $classes;
 	}
 
 	/**
 	 * @param array $classes
-	 *
-	 * @return Module[]
 	 */
 	private function init_modules( array $classes ) {
 		/** @var Module[] $modules */
 		$modules = array();
 
 		foreach ( $classes as $key => $class ) {
-			$module = apply_filters( "sptp_module_${key}", new $class(), $this );
+			$module          = apply_filters( "sptp_module_${key}", new $class(), $this );
 			$modules[ $key ] = $module;
 		}
 
@@ -133,7 +116,7 @@ class Bootstrap {
 			$module->add_hooks();
 		}
 
-		return $modules;
+		$this->modules = $modules;
 
 	}
 
@@ -158,13 +141,31 @@ class Bootstrap {
 		}
 	}
 
+	public function deactivation_action() {
+		foreach ( $this->modules as $module ) {
+			$module->deactivate();
+		}
+	}
+
+	public function activatation_action() {
+		foreach ( $this->modules as $module ) {
+			$module->activate();
+		}
+	}
+
+	public function uninstall_action() {
+		foreach ( $this->modules as $module ) {
+			$module->uninstall();
+		}
+	}
+
 	/**
 	 *
-	 *  Reset rules.
+	 * Delete SPTP options.
 	 *
 	 */
-	public function deactivation() {
-		$this->rewrite->reset_rewrite_rules();
-		flush_rewrite_rules();
+	public static function uninstall() {
+		$sptp = new static();
+		$sptp->uninstall_action();
 	}
 }

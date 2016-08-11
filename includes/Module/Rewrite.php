@@ -156,5 +156,13 @@ class Rewrite extends Module {
 
 	}
 
+	/**
+	 * deactivation action.
+	 */
+	public function deactivate() {
+		$this->reset_rewrite_rules();
+		flush_rewrite_rules();
+	}
+
 
 }
