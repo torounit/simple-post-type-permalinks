@@ -26,9 +26,9 @@ class Bootstrap {
 
 		$this->modules = array();
 
-		$this->setup();
 		$this->init();
-		add_action( 'wp_loaded', array( $this, 'flush_rewrite_rules' ), 999 );
+		$this->setup();
+
 
 	}
 
@@ -120,34 +120,13 @@ class Bootstrap {
 
 	}
 
-	/**
-	 *
-	 * queue reset rewrite rules for next request.
-	 *
-	 */
-	public function queue_flush_rewrite_rules() {
-		update_option( 'sptp_queue_flush_rewrite_rules', 1 );
-	}
-
-	/**
-	 *
-	 *  Re-Create Rewrite Rules.
-	 *
-	 */
-	public function flush_rewrite_rules() {
-		if ( get_option( 'sptp_queue_flush_rewrite_rules' ) ) {
-			flush_rewrite_rules();
-			update_option( 'sptp_queue_flush_rewrite_rules', 0 );
-		}
-	}
-
 	public function deactivation_action() {
 		foreach ( $this->modules as $module ) {
 			$module->deactivate();
 		}
 	}
 
-	public function activatation_action() {
+	public function activation_action() {
 		foreach ( $this->modules as $module ) {
 			$module->activate();
 		}

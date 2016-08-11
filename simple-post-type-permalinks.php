@@ -40,15 +40,8 @@ define( 'SPTP_REQUIRE_PHP_VERSION', '5.3' );
 
 unset( $sptp_data );
 
-
-/**
- * load textdomain
- */
-function sptp_load_textdomain () {
-	load_plugin_textdomain( SPTP_TEXT_DOMAIN, false, dirname( plugin_basename( SPTP_FILE ) ) . SPTP_DOMAIN_PATH );
-}
-
 function sptp_init() {
+	load_plugin_textdomain( SPTP_TEXT_DOMAIN, false, dirname( plugin_basename( SPTP_FILE ) ) . SPTP_DOMAIN_PATH );
 	if ( version_compare( phpversion(), SPTP_REQUIRE_PHP_VERSION, '>' ) ) {
 		require SPTP_PATH . '/includes/SPTP.php';
 	} else {
@@ -72,8 +65,7 @@ function sptp_admin_notices() {
 /**
  * init
  */
-add_action( 'plugins_loaded', 'sptp_load_textdomain' );
-add_action( 'plugins_loaded', 'sptp_init' );
+sptp_init();
 
 
 
