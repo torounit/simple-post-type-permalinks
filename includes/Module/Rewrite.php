@@ -9,20 +9,13 @@
  *
  */
 
-namespace SPTP;
+namespace SPTP\Module;
 
-class Rewrite {
+class Rewrite extends Module {
 
 
 	/** @var array */
 	private $queue;
-
-	/** @var  Option */
-	private $option;
-
-	public function __construct( Option $option ) {
-		$this->option = $option;
-	}
 
 	/**
 	 * add_hooks

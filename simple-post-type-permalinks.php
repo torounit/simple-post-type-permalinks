@@ -40,7 +40,6 @@ define( 'SPTP_REQUIRE_PHP_VERSION', '5.3' );
 
 unset( $sptp_data );
 
-add_action( 'plugins_loaded', 'sptp_load_textdomain' );
 
 /**
  * load textdomain
@@ -49,10 +48,13 @@ function sptp_load_textdomain () {
 	load_plugin_textdomain( SPTP_TEXT_DOMAIN, false, dirname( plugin_basename( SPTP_FILE ) ) . SPTP_DOMAIN_PATH );
 }
 
-if ( version_compare( phpversion(), SPTP_REQUIRE_PHP_VERSION, '>' ) ) {
-	require SPTP_PATH . '/includes/SPTP.php';
-} else {
-	add_action( 'admin_notices', 'sptp_admin_notices' );
+function sptp_init() {
+	if ( version_compare( phpversion(), SPTP_REQUIRE_PHP_VERSION, '>' ) ) {
+		require SPTP_PATH . '/includes/SPTP.php';
+	} else {
+		add_action( 'admin_notices', 'sptp_admin_notices' );
+	}
+
 }
 
 /**
@@ -66,6 +68,14 @@ function sptp_admin_notices() {
 
 	echo sprintf( '<div class="error"><p>%s</p></div>', $message );
 }
+
+/**
+ * init
+ */
+add_action( 'plugins_loaded', 'sptp_load_textdomain' );
+add_action( 'plugins_loaded', 'sptp_init' );
+
+
 
 
 

@@ -2,10 +2,10 @@
 
 namespace SPTP;
 
-require SPTP_PATH . '/includes/Option.php';
-require SPTP_PATH . '/includes/Rewrite.php';
-require SPTP_PATH . '/includes/Permalink.php';
-require SPTP_PATH . '/includes/Admin.php';
-require SPTP_PATH . '/includes/Bootstrap.php';
+require SPTP_PATH . '/includes/Psr4AutoloaderClass.php';
 
-$sptp = new Bootstrap();
+$loader = new Psr4AutoloaderClass;
+$loader->register();
+$loader->addNamespace('SPTP', SPTP_PATH. '/includes');
+
+new Bootstrap();

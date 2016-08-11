@@ -9,9 +9,9 @@
  *
  */
 
-namespace SPTP;
+namespace SPTP\Module;
 
-class Option {
+class Option extends Module {
 
 
 	public function add_hooks() {

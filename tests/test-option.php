@@ -8,7 +8,7 @@ class SPTP_Option_Test extends WP_UnitTestCase {
 	public function setUp() {
 
 		parent::setUp();
-		$this->option = new SPTP\Option();
+		$this->option = new SPTP\Module\Option();
 
 	}
 

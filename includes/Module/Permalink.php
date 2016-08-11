@@ -9,16 +9,9 @@
  *
  */
 
-namespace SPTP;
+namespace SPTP\Module;
 
-class Permalink {
-
-	/** @var  Option */
-	private $option;
-
-	public function __construct( Option $option ) {
-		$this->option = $option;
-	}
+class Permalink extends Module {
 
 	public function add_hooks() {
 		$post_type_link_priority         = apply_filters( 'sptp_post_type_link_priority', 10 );

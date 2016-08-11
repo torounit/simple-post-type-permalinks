@@ -10,7 +10,16 @@
  */
 namespace SPTP;
 
+use SPTP\Module\Module;
+use SPTP\Module\Admin;
+use SPTP\Module\Permalink;
+use SPTP\Module\Rewrite;
+use SPTP\Module\Option;
+
 class Bootstrap {
+
+	/** @var Module[] */
+	private $modules;
 
 
 	/** @var Option */
@@ -27,9 +36,10 @@ class Bootstrap {
 
 	public function __construct() {
 
-		$this->setup();
+		$this->modules = array();
 
-		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
+		$this->setup();
+		$this->init();
 		add_action( 'wp_loaded', array( $this, 'flush_rewrite_rules' ), 999 );
 
 	}
@@ -60,7 +70,7 @@ class Bootstrap {
 	 * initialize.
 	 *
 	 */
-	public function plugins_loaded() {
+	public function init() {
 
 		$this->load_modules();
 
@@ -76,19 +86,55 @@ class Bootstrap {
 
 		do_action( 'sptp_before_load_modules' );
 
-		$this->option    = apply_filters( 'sptp_module_option', new Option(), $this );
-		$this->admin     = apply_filters( 'sptp_module_admin', new Admin( $this->option ), $this );
-		$this->rewrite   = apply_filters( 'sptp_module_rewrite', new Rewrite( $this->option ), $this );
-		$this->permalink = apply_filters( 'sptp_module_permalink', new Permalink( $this->option ), $this );
-
-		$this->option->add_hooks();
-		$this->admin->add_hooks();
-		$this->rewrite->add_hooks();
-		$this->permalink->add_hooks();
+		$classes = $this->get_module_classes();
+		$this->modules = $this->init_modules( $classes );
 
 		do_action( 'sptp_after_load_modules' );
 
 		do_action( 'sptp_modules_loaded' );
+	}
+
+	/**
+	 * @return array
+	 */
+	private function get_module_classes( ) {
+		$base_classes = array(
+			'option' =>    Option::get_class(),
+			'admin'  =>    Admin::get_class(),
+			'rewrite' =>   Rewrite::get_class(),
+			'permalink' => Permalink::get_class(),
+		);
+
+		$classes = array();
+		foreach ( $base_classes as $key => $class ) {
+			$classes[ $key ] = apply_filters( "sptp_module_${key}_class", $class::get_class() );
+		}
+		return $classes;
+	}
+
+	/**
+	 * @param array $classes
+	 *
+	 * @return Module[]
+	 */
+	private function init_modules( array $classes ) {
+		/** @var Module[] $modules */
+		$modules = array();
+
+		foreach ( $classes as $key => $class ) {
+			$module = apply_filters( "sptp_module_${key}", new $class(), $this );
+			$modules[ $key ] = $module;
+		}
+
+		foreach ( $modules as $key => $module ) {
+			/** @var Option $option */
+			$option = $modules['option'];
+			$module->set_option_module( $option );
+			$module->add_hooks();
+		}
+
+		return $modules;
+
 	}
 
 	/**

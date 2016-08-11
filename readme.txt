@@ -65,6 +65,18 @@ register_post_type( 'foo',
 
 == Changelog ==
 
+= 2.0.0 =
+
+* Change of class structure.
+* Change namespace.
+* Add abstract Module class.
+* Use autoloader.
+* Remove constructor injection and add setter injection for modules.
+
+= 1.3.1 =
+
+* fix pagination link.
+
 = 1.2.0 =
 * fix textdomain.
 

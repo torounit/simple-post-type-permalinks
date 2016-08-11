@@ -9,16 +9,10 @@
  *
  */
 
-namespace SPTP;
+namespace SPTP\Module;
 
-class Admin {
+class Admin extends Module {
 
-	/** @var  Option */
-	private $option;
-
-	public function __construct( Option $option ) {
-		$this->option = $option;
-	}
 
 	public function add_hooks() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
