@@ -1,16 +1,16 @@
 <?php
 /**
  * @package SPTP
- * @version 1.3.1
+ * @version 2.0.0
  */
 /**
  * Plugin Name: Simple Post Type Permalinks
  * Plugin URI:  https://github.com/torounit/simple-post-type-permalinks
  * Description: Easy to change Permalink of custom post type.
- * Version:     1.3.1
+ * Version:     2.0.0
  * Author:      Toro_Unit
  * Author URI:  http://www.torounit.com
- * License:     GPLv2
+ * License:     GPLv2 or Later
  * Text Domain: simple-post-type-permalinks
  * Domain Path: /languages
  */
