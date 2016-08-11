@@ -66,6 +66,16 @@ class Admin extends Module {
 		register_setting( 'permalink', "sptp_{$post_type}_structure" );
 	}
 
+	private function get_example_settings( $slug ) {
+		return array(
+			false,
+			"/{$slug}/%post_id%",
+			"/{$slug}/%postname%.html",
+			"/{$slug}/%post_id%.html",
+		);
+	}
+
+
 	/**
 	 *
 	 * setting field row.
@@ -91,12 +101,8 @@ class Admin extends Module {
 		if( !empty( $post_type_object->rewrite['original_slug'] ) ) {
 			$slug = trim( $post_type_object->rewrite['original_slug'], '/' );
 		}
-		$values     = array(
-			false,
-			"{$slug}/%post_id%",
-			"{$slug}/%postname%.html",
-			"{$slug}/%post_id%.html",
-		);
+
+		$sample_settings = $this->get_example_settings( $slug );
 
 		$permastruct = $this->option->get_structure( $post_type );
 
@@ -105,25 +111,25 @@ class Admin extends Module {
 		<fieldset class="sptp-fieldset <?php echo ( $with_front ) ? 'with-front' : ''; ?>">
 			<?php
 			$checked = false;
-			foreach ( $values as $value ) :
+			foreach ( $sample_settings as $sample_setting ) :
 				if ( ! $checked ) {
-					$checked = ( $permastruct == $value );
+					$checked = ( $permastruct == $sample_setting );
 				}
 
-				$permalink = str_replace( array( '%postname%', '%post_id%' ), array( 'sample-post', '123' ), $value );
+				$permalink = str_replace( array('%postname%', '%post_id%' ), array( 'sample-post', '123' ), $sample_setting );
 				?>
 				<label>
 					<input type="radio" name="<?php echo esc_attr( $args ); ?>_select"
-					       value="<?php echo esc_attr( $value ) ?>"
+					       value="<?php echo esc_attr( $sample_setting ) ?>"
 						<?php
 						if ( ! $disabled ) {
-							checked( $permastruct, $value );
+							checked( $permastruct, $sample_setting );
 						} ?>
 						<?php disabled( $disabled );?>
 						/>
 					<?php
-					if ( $value ) :?>
-						<code><?php echo esc_html( home_url() ) . '/' . $this->create_permastruct( $permalink, $with_front ); ?><span
+					if ( $sample_setting ) :?>
+						<code><?php echo esc_html( home_url() ) . $this->create_permastruct( $permalink, $with_front ); ?><span
 								class="slash"><?php echo esc_attr( $slash ); ?></span></code>
 					<?php
 					else : ?>
@@ -140,12 +146,12 @@ class Admin extends Module {
 				<input type="radio" name="<?php echo esc_attr( $args ); ?>_select" value="custom"
 					<?php checked( $checked, false ); ?>
 					<?php disabled( $disabled ); ?> />
-				<code><?php echo esc_html( home_url() ) . '/' . $this->create_permastruct( '', $with_front ); ?></code>
+				<code><?php echo esc_html( home_url() ) . $this->create_permastruct( '', $with_front ); ?></code>
 
 				<input class="regular-text code"
 				       name="<?php echo esc_attr( "sptp_{$post_type}_structure" ); ?>"
 				       id="<?php echo esc_attr( "sptp_{$post_type}_structure" ); ?>"
-				       type="text" value="<?php echo esc_attr( $permastruct ) ?>"
+				       type="text" value="/<?php echo esc_attr( $permastruct ) ?>"
 					<?php disabled( $disabled ); ?>
 					/><span class="slash"><?php echo esc_html( $slash ); ?></span>
 			</label>
@@ -168,10 +174,10 @@ class Admin extends Module {
 		global $wp_rewrite;
 		$front = '';
 		if ( $with_front ) {
-			$front = '<span class="front">' . esc_html( substr( $wp_rewrite->front, 1 ) ) . '</span>';
+			$front = '<span class="front">' . esc_html( substr( $wp_rewrite->front, 0, -1 ) ) . '</span>';
 		}
 
-		return $front . esc_html( $string );
+		return untrailingslashit(  $front . esc_html( $string ) );
 	}
 
 

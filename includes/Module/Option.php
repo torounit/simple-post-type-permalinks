@@ -30,7 +30,7 @@ class Option extends Module {
 			return $post_type_object->sptp_permalink_structure;
 		}
 
-		return $this->get( "sptp_{$post_type}_structure" );
+		return trim( $this->get( "sptp_{$post_type}_structure" ), '/' );
 	}
 
 	/**

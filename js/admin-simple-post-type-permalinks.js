@@ -28,8 +28,8 @@
     var $selection = $("input[name=selection]");
 
     function setFront(val) {
-        var front = val.split("%").shift().substr(1);
-        $(".front").html(front);
+        var front = val.split("%").shift();
+        $(".front").html(front.substr( 0, front.length-1 ) );
     }
 
     function setSlash(val) {
