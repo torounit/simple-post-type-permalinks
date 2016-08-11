@@ -14,14 +14,13 @@ Easy to change Permalink of custom post type.
 
 Edit the permalink structure of custom post type too easy.
 
-Simple Post Type Permalinks is simpler than [Custom Post Type Permalinks](https://wordpress.org/plugins/custom-post-type-permalinks/).
+Simple Post Type Permalinks is Simple and Smart than [Custom Post Type Permalinks](https://wordpress.org/plugins/custom-post-type-permalinks/).
 
 Requires PHP version 5.3 or higher.
 
 [This Plugin published on GitHub.](https://github.com/torounit/simple-post-type-permalinks)
 
 Please Fork and Pull Request!
-
 
 
 == Installation ==
