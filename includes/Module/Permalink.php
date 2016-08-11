@@ -45,14 +45,36 @@ class Permalink extends Module {
 			return $post_link;
 		}
 
+		$author = '';
+		if ( false !== strpos( $post_link, '%author%' ) ) {
+			$authordata = get_userdata( $post->post_author );
+			$author     = $authordata->user_nicename;
+		}
+
+		$post_date = strtotime( $post->post_date );
+
 		$rewritecode    = array(
 			"%${post_type}_slug%",
 			"%post_id%",
-			);
+			'%year%',
+			'%monthnum%',
+			'%day%',
+			'%hour%',
+			'%minute%',
+			'%second%',
+			'%author%',
+		);
 		$rewritereplace = array(
 			$this->option->get_front_struct( $post_type ),
 			$post->ID,
-			);
+			date( 'Y', $post_date ),
+			date( 'm', $post_date ),
+			date( 'd', $post_date ),
+			date( 'H', $post_date ),
+			date( 'i', $post_date ),
+			date( 's', $post_date ),
+			$author,
+		);
 
 		return str_replace( $rewritecode, $rewritereplace, $post_link );
 

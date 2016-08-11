@@ -19,10 +19,13 @@ class SPTP_Permalink_Test extends WP_UnitTestCase {
 
 	public function structure_provider() {
 		return array(
-			array( '%post_id%' ),
-			array( '%postname%' ),
-			array( '%post_id%.html' ),
-			array( '%postname%.html' ),
+			array( '/%post_id%' ),
+			array( '/%postname%' ),
+			array( '/%post_id%.html' ),
+			array( '/%postname%.html' ),
+			array( '/%year%/%monthnum%/%day%/%postname%' ),
+			array( '/%year%/%monthnum%/%day%/%post_id%' ),
+			array( '/%author%/%postname%' ),
 		);
 	}
 
@@ -40,12 +43,9 @@ class SPTP_Permalink_Test extends WP_UnitTestCase {
 		register_post_type( $post_type,
 			array(
 				'public'                   => true,
-				'sptp_permalink_structure' => $post_type . '/' . $structure,
+				'sptp_permalink_structure' => $post_type . $structure,
 			)
 		);
-
-		$post_name = rand_str( 12 );
-		$id        = $this->factory->post->create( array( 'post_type' => $post_type, 'post_name' => $post_name ) );
 
 		do_action( 'wp_loaded' );//fire SPTP_Rewrite::register_rewrite_rules
 
@@ -53,8 +53,44 @@ class SPTP_Permalink_Test extends WP_UnitTestCase {
 		global $wp_rewrite;
 		$wp_rewrite->flush_rules(); //regenerate rewrite rules.
 
-		$url_base = "${post_type}/${structure}";
-		$expected = home_url( str_replace( array( '%post_id%', '%postname%' ), array( $id, $post_name ), $url_base ) );
+		$id = $this->factory->user->create();
+		$post_name = rand_str( 12 );
+		$id        = $this->factory->post->create( array( 'post_type' => $post_type, 'post_name' => $post_name, 'post_author' => $id ) );
+		$post      = get_post( $id );
+
+
+		$author_data = get_userdata( $post->post_author );
+		$author     = $author_data->user_nicename;
+
+		$post_date = strtotime( $post->post_date );
+
+		$search  = array(
+			"%postname%",
+			"%post_id%",
+			'%year%',
+			'%monthnum%',
+			'%day%',
+			'%hour%',
+			'%minute%',
+			'%second%',
+			'%author%',
+		);
+		$replace = array(
+			$post_name,
+			$post->ID,
+			date( 'Y', $post_date ),
+			date( 'm', $post_date ),
+			date( 'd', $post_date ),
+			date( 'H', $post_date ),
+			date( 'i', $post_date ),
+			date( 's', $post_date ),
+			$author,
+		);
+
+		$url_base = str_replace( $search, $replace, "${post_type}/". trim( $structure, '/' ) );
+
+		$expected = home_url( $url_base );
+
 		$this->assertEquals( $expected, get_permalink( $id ) );
 
 		$this->assertEquals( $id, url_to_postid( get_permalink( $id ) ) );
