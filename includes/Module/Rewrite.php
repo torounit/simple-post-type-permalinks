@@ -81,7 +81,7 @@ class Rewrite extends Module {
 	 * @param object $args Arguments used to register the post type.
 	 */
 	public function register_rewrite_rule( $post_type, $args ) {
-
+		global $wp_rewrite;
 		if ( '' == get_option( 'permalink_structure' ) ) {
 			return;
 		}
@@ -114,8 +114,19 @@ class Rewrite extends Module {
 			$slug = $this->option->get_front_struct( $post_type );
 
 			if ( $slug ) {
-				add_rewrite_rule( "$slug/page/?([0-9]{1,})/?$", "index.php?paged=\$matches[1]&post_type=$post_type", 'top' );
 				add_rewrite_rule( "$slug/?$", "index.php?post_type=$post_type", 'top' );
+
+				if ( $args->rewrite['feeds'] && $wp_rewrite->feeds ) {
+					$feeds = '(' . trim( implode( '|', $wp_rewrite->feeds ) ) . ')';
+					add_rewrite_rule( "{$slug}/feed/$feeds/?$", "index.php?post_type=$post_type" . '&feed=$matches[1]', 'top' );
+					add_rewrite_rule( "{$slug}/$feeds/?$", "index.php?post_type=$post_type" . '&feed=$matches[1]', 'top' );
+				}
+
+				if( $args->rewrite['pages'] ) {
+					add_rewrite_rule( "$slug/{$wp_rewrite->pagination_base}/?([0-9]{1,})/?$", "index.php?post_type=$post_type". '&paged=$matches[1]', 'top' );
+				}
+
+
 			}
 		}
 	}
