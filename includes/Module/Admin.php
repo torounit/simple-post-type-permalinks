@@ -44,7 +44,7 @@ class Admin extends Module {
 		<p><?php _e( 'Select permalink setting.' ); ?>
 			<?php _e( 'Available tags are only <code>%post_id%</code> and <code>%postname%</code>.' ); ?></p>
 
-	<?php
+		<?php
 
 	}
 
@@ -72,6 +72,7 @@ class Admin extends Module {
 			"/{$slug}/%post_id%",
 			"/{$slug}/%postname%.html",
 			"/{$slug}/%post_id%.html",
+			"/{$slug}/%year%/%monthnum%/%day%/%postname%/",
 		);
 	}
 
@@ -98,7 +99,7 @@ class Admin extends Module {
 
 		$with_front = $post_type_object->rewrite['with_front'];
 		$slug       = trim( $post_type_object->rewrite['slug'], '/' );
-		if( !empty( $post_type_object->rewrite['original_slug'] ) ) {
+		if ( ! empty( $post_type_object->rewrite['original_slug'] ) ) {
 			$slug = trim( $post_type_object->rewrite['original_slug'], '/' );
 		}
 
@@ -116,7 +117,19 @@ class Admin extends Module {
 					$checked = ( $permastruct == $sample_setting );
 				}
 
-				$permalink = str_replace( array('%postname%', '%post_id%' ), array( 'sample-post', '123' ), $sample_setting );
+				$dummy_tags = array(
+					'%postname%' => 'sample-post',
+					'%post_id%'  => '123',
+					'%year%'     => date_i18n( 'Y' ),
+					'%monthnum%' => date_i18n( 'm'),
+					'%day%'      => date_i18n( 'd'),
+					'%hour%'     => date_i18n( 'H'),
+					'%minute%'   => date_i18n( 'i'),
+					'%second%'   => date_i18n( 's'),
+					'%author%'   => 'jhon-doe',
+				);
+
+				$permalink = str_replace( array_keys( $dummy_tags ), array_values( $dummy_tags ), $sample_setting );
 				?>
 				<label>
 					<input type="radio" name="<?php echo esc_attr( $args ); ?>_select"
@@ -125,21 +138,22 @@ class Admin extends Module {
 						if ( ! $disabled ) {
 							checked( $permastruct, $sample_setting );
 						} ?>
-						<?php disabled( $disabled );?>
-						/>
+						<?php disabled( $disabled ); ?>
+					/>
 					<?php
 					if ( $sample_setting ) :?>
-						<code><?php echo esc_html( home_url() ) . $this->create_permastruct( $permalink, $with_front ); ?><span
+						<code><?php echo esc_html( home_url() ) . $this->create_permastruct( $permalink, $with_front ); ?>
+							<span
 								class="slash"><?php echo esc_attr( $slash ); ?></span></code>
-					<?php
+						<?php
 					else : ?>
 						Default.
-					<?php
-					endif;?>
+						<?php
+					endif; ?>
 
 				</label>
 				<br/>
-			<?php
+				<?php
 			endforeach;
 			?>
 			<label>
@@ -153,11 +167,11 @@ class Admin extends Module {
 				       id="<?php echo esc_attr( "sptp_{$post_type}_structure" ); ?>"
 				       type="text" value="/<?php echo esc_attr( $permastruct ) ?>"
 					<?php disabled( $disabled ); ?>
-					/><span class="slash"><?php echo esc_html( $slash ); ?></span>
+				/><span class="slash"><?php echo esc_html( $slash ); ?></span>
 			</label>
 
 		</fieldset>
-	<?php
+		<?php
 	}
 
 
@@ -174,10 +188,10 @@ class Admin extends Module {
 		global $wp_rewrite;
 		$front = '';
 		if ( $with_front ) {
-			$front = '<span class="front">' . esc_html( substr( $wp_rewrite->front, 0, -1 ) ) . '</span>';
+			$front = '<span class="front">' . esc_html( substr( $wp_rewrite->front, 0, - 1 ) ) . '</span>';
 		}
 
-		return untrailingslashit(  $front . esc_html( $string ) );
+		return untrailingslashit( $front . esc_html( $string ) );
 	}
 
 
