@@ -50,6 +50,11 @@ class SPTP_Permalink_Test extends WP_UnitTestCase {
 		$wp_rewrite->flush_rules();
 
 		$this->assertEquals( $id, url_to_postid( get_permalink( $id ) ) );
+		$this->go_to( get_permalink( $id ) );
+		$this->assertQueryTrue( 'is_single', 'is_singular' );
+		$this->go_to( add_query_arg( 'page', 2, get_permalink( $id ) ) );
+		$this->assertQueryTrue( 'is_single', 'is_singular' );
+		$this->assertEquals( get_query_var( "page"), 2 );
 
 	}
 
