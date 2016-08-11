@@ -1,13 +1,13 @@
 <?php
 /**
  * @package SPTP
- * @version 1.2.1
+ * @version 1.3.1
  */
 /**
  * Plugin Name: Simple Post Type Permalinks
  * Plugin URI:  https://github.com/torounit/simple-post-type-permalinks
  * Description: Easy to change Permalink of custom post type.
- * Version:     1.2.1
+ * Version:     1.3.1
  * Author:      Toro_Unit
  * Author URI:  http://www.torounit.com
  * License:     GPLv2
@@ -36,6 +36,7 @@ $sptp_data = get_file_data( __FILE__, array(
 define( 'SPTP_VER', $sptp_data['Version'] );
 define( 'SPTP_DOMAIN_PATH', $sptp_data['DomainPath'] );
 define( 'SPTP_TEXT_DOMAIN', $sptp_data['TextDomain'] );
+define( 'SPTP_REQUIRE_PHP_VERSION', '5.3' );
 
 unset( $sptp_data );
 
@@ -48,7 +49,7 @@ function sptp_load_textdomain () {
 	load_plugin_textdomain( SPTP_TEXT_DOMAIN, false, dirname( plugin_basename( SPTP_FILE ) ) . SPTP_DOMAIN_PATH );
 }
 
-if ( version_compare( phpversion(), '5.3', '>' ) ) {
+if ( version_compare( phpversion(), SPTP_REQUIRE_PHP_VERSION, '>' ) ) {
 	require SPTP_PATH . '/includes/SPTP.php';
 } else {
 	add_action( 'admin_notices', 'sptp_admin_notices' );
@@ -58,7 +59,11 @@ if ( version_compare( phpversion(), '5.3', '>' ) ) {
  * notices for old php version.
  */
 function sptp_admin_notices() {
-	$message = __( '[Simple Post Type Permalinks] Simple Post Type Permalinks requires PHP version 5.3 or higher.', SPTP_TEXT_DOMAIN );
+	$message = sprintf(
+		__(  '[Simple Post Type Permalinks] Simple Post Type Permalinks requires PHP version %s or higher.', SPTP_TEXT_DOMAIN ),
+		SPTP_REQUIRE_PHP_VERSION
+	);
+
 	echo sprintf( '<div class="error"><p>%s</p></div>', $message );
 }
 

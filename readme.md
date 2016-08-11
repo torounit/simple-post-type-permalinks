@@ -68,6 +68,10 @@ register_post_type( 'foo',
 
 ## Changelog
 
+### 1.3.1
+
+* fix pagination link.
+
 ### 1.2.0
 
 * fix textdomain.
