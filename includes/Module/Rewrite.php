@@ -32,17 +32,22 @@ class Rewrite extends Module {
 	 * @param object $args Arguments used to register the post type.
 	 */
 	public function registered_post_type( $post_type, $args ) {
-		global $wp_post_types;
 
 		if ( $args->_builtin or ! $args->publicly_queryable ) {
 			return;
 		}
+
+		$this->override_post_type_slug( $post_type );
 
 		$this->queue[ $post_type ] = array(
 			'post_type' => $post_type,
 			'args'      => $args,
 		);
 
+	}
+
+	private function override_post_type_slug( $post_type ) {
+		global $wp_post_types;
 		if ( $slug = $this->option->get_front_struct( $post_type ) ) {
 			if ( is_array( $wp_post_types[ $post_type ]->rewrite ) ) {
 				$original_slug = $wp_post_types[ $post_type ]->rewrite['slug'];
@@ -50,7 +55,6 @@ class Rewrite extends Module {
 				$wp_post_types[ $post_type ]->rewrite['original_slug'] = $original_slug;
 			}
 		}
-
 	}
 
 	/**
@@ -61,21 +65,14 @@ class Rewrite extends Module {
 	public function register_rewrite_rules() {
 
 		if ( ! empty( $this->queue ) ) {
-			array_walk( $this->queue, array( $this, 'register_rewrite_rule_adapter' ) );
+
+			foreach ( $this->queue as $param ) {
+				$args      = $param['args'];
+				$post_type = $param['post_type'];
+				$this->register_rewrite_rule( $post_type, $args );
+			}
 		}
 	}
-
-	/**
-	 *
-	 * @param array $param
-	 *
-	 */
-	public function register_rewrite_rule_adapter( Array $param ) {
-		$args      = $param['args'];
-		$post_type = $param['post_type'];
-		$this->register_rewrite_rule( $post_type, $args );
-	}
-
 
 	/**
 	 * after a post type is registered.
@@ -151,7 +148,7 @@ class Rewrite extends Module {
 		$permastruct_args['feed'] = $permastruct_args['feeds'];
 
 		if ( $this->option->get_structure( $post_type ) ) {
-			add_permastruct( $post_type, "{$args->rewrite['slug']}/%$post_type%", $permastruct_args );
+			add_permastruct( $post_type, "{$args->rewrite['original_slug']}/%$post_type%", $permastruct_args );
 		}
 
 	}

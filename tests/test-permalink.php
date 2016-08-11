@@ -31,6 +31,8 @@ class SPTP_Permalink_Test extends WP_UnitTestCase {
 	 * @test
 	 * @group permalink
 	 * @dataProvider structure_provider
+	 *
+	 * @param $structure
 	 */
 	public function test_permalink( $structure ) {
 
@@ -42,19 +44,26 @@ class SPTP_Permalink_Test extends WP_UnitTestCase {
 			)
 		);
 
-		$id = $this->factory->post->create( array( 'post_type' => $post_type ) );
+		$post_name = rand_str( 12 );
+		$id        = $this->factory->post->create( array( 'post_type' => $post_type, 'post_name' => $post_name ) );
 
 		do_action( 'wp_loaded' );//fire SPTP_Rewrite::register_rewrite_rules
+
 		/** @var WP_Rewrite $wp_rewrite */
 		global $wp_rewrite;
-		$wp_rewrite->flush_rules();
+		$wp_rewrite->flush_rules(); //regenerate rewrite rules.
+
+		$url_base = "${post_type}/${structure}";
+		$expected = home_url( str_replace( array( '%post_id%', '%postname%' ), array( $id, $post_name ), $url_base ) );
+		$this->assertEquals( $expected, get_permalink( $id ) );
 
 		$this->assertEquals( $id, url_to_postid( get_permalink( $id ) ) );
 		$this->go_to( get_permalink( $id ) );
 		$this->assertQueryTrue( 'is_single', 'is_singular' );
+
 		$this->go_to( add_query_arg( 'page', 2, get_permalink( $id ) ) );
 		$this->assertQueryTrue( 'is_single', 'is_singular' );
-		$this->assertEquals( get_query_var( "page"), 2 );
+		$this->assertEquals( get_query_var( "page" ), 2 );
 
 	}
 
