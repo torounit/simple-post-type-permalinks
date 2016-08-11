@@ -161,5 +161,12 @@ class Rewrite extends Module {
 		flush_rewrite_rules();
 	}
 
+	/**
+	 * deactivation action.
+	 */
+	public function uninstall() {
+		$this->deactivate();
+	}
+
 
 }
