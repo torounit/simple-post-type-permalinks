@@ -99,17 +99,26 @@ class Rewrite {
 		$permastruct_args         = $args->rewrite;
 		$permastruct_args['feed'] = $permastruct_args['feeds'];
 
-		$queryarg = "post_type={$post_type}&p=";
-		$tag      = "%{$post_type}_id%";
-
-		add_rewrite_tag( $tag, '([0-9]+)', $queryarg );
 
 		if ( $struct = $this->option->get_structure( $post_type ) ) {
 
-			$search  = array( '%postname%', '%post_id%' );
-			$replace = array( "%{$post_type}%", "%{$post_type}_id%" );
-			$struct  = str_replace( $search, $replace, $struct );
+			//$post_type_slug = $args->rewrite['slug'];
+			$post_type_slug = $this->option->get_front_struct( $post_type );
+			add_rewrite_tag( "%${post_type}_slug%", "(${post_type_slug})", "post_type=${post_type}&slug=" );
 
+			$struct  = str_replace(
+				array(
+					$post_type_slug,
+					'%postname%',
+
+				),
+				array(
+					"%${post_type}_slug%",
+					"%{$post_type}%",
+				),
+				$struct );
+
+			//$rewrite_args['walk_dirs'] = false;
 			add_permastruct( $post_type, $struct, $permastruct_args );
 
 			$slug = $this->option->get_front_struct( $post_type );

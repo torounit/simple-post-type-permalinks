@@ -47,12 +47,19 @@ class Permalink {
 	 */
 	public function post_type_link( $post_link, \WP_Post $post ) {
 
-		if ( ! $this->option->get_structure( $post->post_type ) ) {
+		$post_type = $post->post_type;
+		if ( ! $this->option->get_structure( $post_type ) ) {
 			return $post_link;
 		}
 
-		$rewritecode    = array( "%{$post->post_type}_id%", );
-		$rewritereplace = array( $post->ID, );
+		$rewritecode    = array(
+			"%${post_type}_slug%",
+			"%post_id%",
+			);
+		$rewritereplace = array(
+			$this->option->get_front_struct( $post_type ),
+			$post->ID,
+			);
 
 		return str_replace( $rewritecode, $rewritereplace, $post_link );
 
