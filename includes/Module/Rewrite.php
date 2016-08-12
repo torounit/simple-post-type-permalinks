@@ -22,7 +22,6 @@ class Rewrite extends Module {
 	 */
 	public function add_hooks() {
 		add_action( 'registered_post_type', array( $this, 'registered_post_type' ), 10, 2 );
-		add_action( 'wp_loaded', array( $this, 'register_rewrite_rules' ), 100, 2 );
 	}
 
 	/**
@@ -44,32 +43,22 @@ class Rewrite extends Module {
 			'args'      => $args,
 		);
 
+		$this->register_rewrite_rule( $post_type, $args );
+
 	}
 
+	/**
+	 * override slug and save original.
+	 *
+	 * @param $post_type
+	 */
 	private function override_post_type_slug( $post_type ) {
 		global $wp_post_types;
 		if ( $slug = $this->option->get_front_struct( $post_type ) ) {
 			if ( is_array( $wp_post_types[ $post_type ]->rewrite ) ) {
-				$original_slug = $wp_post_types[ $post_type ]->rewrite['slug'];
-				$wp_post_types[ $post_type ]->rewrite['slug'] = $slug;
+				$original_slug                                         = $wp_post_types[ $post_type ]->rewrite['slug'];
+				$wp_post_types[ $post_type ]->rewrite['slug']          = $slug;
 				$wp_post_types[ $post_type ]->rewrite['original_slug'] = $original_slug;
-			}
-		}
-	}
-
-	/**
-	 *
-	 * Override Permastructs.
-	 *
-	 */
-	public function register_rewrite_rules() {
-
-		if ( ! empty( $this->queue ) ) {
-
-			foreach ( $this->queue as $param ) {
-				$args      = $param['args'];
-				$post_type = $param['post_type'];
-				$this->register_rewrite_rule( $post_type, $args );
 			}
 		}
 	}
@@ -92,11 +81,10 @@ class Rewrite extends Module {
 
 		if ( $struct = $this->option->get_structure( $post_type ) ) {
 
-			//$post_type_slug = $args->rewrite['slug'];
 			$post_type_slug = $this->option->get_front_struct( $post_type );
 			add_rewrite_tag( "%${post_type}_slug%", "(${post_type_slug})", "post_type=${post_type}&slug=" );
 
-			$struct  = str_replace(
+			$struct = str_replace(
 				array(
 					$post_type_slug,
 					'%postname%',
@@ -122,15 +110,12 @@ class Rewrite extends Module {
 					add_rewrite_rule( "{$slug}/$feeds/?$", "index.php?post_type=$post_type" . '&feed=$matches[1]', 'top' );
 				}
 
-				if( $args->rewrite['pages'] ) {
-					add_rewrite_rule( "$slug/{$wp_rewrite->pagination_base}/?([0-9]{1,})/?$", "index.php?post_type=$post_type". '&paged=$matches[1]', 'top' );
+				if ( $args->rewrite['pages'] ) {
+					add_rewrite_rule( "$slug/{$wp_rewrite->pagination_base}/?([0-9]{1,})/?$", "index.php?post_type=$post_type" . '&paged=$matches[1]', 'top' );
 				}
-
-
 			}
 		}
 	}
-
 
 	/**
 	 *
@@ -141,7 +126,6 @@ class Rewrite extends Module {
 	public function reset_rewrite_rules() {
 		array_walk( $this->queue, array( $this, 'reset_rewrite_rule' ) );
 	}
-
 
 	/**
 	 *
