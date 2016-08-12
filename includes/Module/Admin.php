@@ -71,7 +71,7 @@ class Admin extends Module {
 			false,
 			"/{$slug}/%post_id%",
 			"/{$slug}/%postname%.html",
-			"/{$slug}/%post_id%.html",
+			"/{$slug}/%author%/%postname%",
 			"/{$slug}/%year%/%monthnum%/%day%/%postname%/",
 		);
 	}
@@ -133,17 +133,14 @@ class Admin extends Module {
 				?>
 				<label>
 					<input type="radio" name="<?php echo esc_attr( $args ); ?>_select"
-					       value="<?php echo esc_attr( $sample_setting ) ?>"
-						<?php
+					       value="<?php echo esc_attr( $sample_setting ) ?>" <?php
 						if ( ! $disabled ) {
 							checked( $permastruct, $sample_setting );
-						} ?>
-						<?php disabled( $disabled ); ?>
-					/>
+						}
+						disabled( $disabled );?> />
 					<?php
 					if ( $sample_setting ) :?>
-						<code><?php echo esc_html( home_url() ) . $this->create_permastruct( $permalink, $with_front ); ?>
-							<span
+						<code><?php echo esc_html( home_url() ) . $this->create_permastruct( $permalink, $with_front ); ?><span
 								class="slash"><?php echo esc_attr( $slash ); ?></span></code>
 						<?php
 					else : ?>
