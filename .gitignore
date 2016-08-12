@@ -3,3 +3,4 @@ release
 npm-debug.log
 composer.phar
 vendor
+composer.lock
