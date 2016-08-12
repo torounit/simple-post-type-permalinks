@@ -17,16 +17,8 @@ class Permalink extends Module {
 		$post_type_link_priority         = apply_filters( 'sptp_post_type_link_priority', 10 );
 		$post_type_archive_link_priority = apply_filters( 'sptp_post_type_archive_link_priority', 10 );
 
-		add_filter(
-			'post_type_link', array(
-			$this,
-			'post_type_link'
-		), $post_type_link_priority, 2 );
-
-		add_filter( 'post_type_archive_link', array(
-			$this,
-			'post_type_archive_link'
-		), $post_type_archive_link_priority, 2 );
+		add_filter( 'post_type_link', array( $this, 'post_type_link' ), $post_type_link_priority, 2 );
+		add_filter( 'post_type_archive_link', array( $this, 'post_type_archive_link' ), $post_type_archive_link_priority, 2 );
 	}
 
 	/**
@@ -55,7 +47,7 @@ class Permalink extends Module {
 
 		$rewritecode    = array(
 			"%${post_type}_slug%",
-			"%post_id%",
+			'%post_id%',
 			'%year%',
 			'%monthnum%',
 			'%day%',
@@ -102,5 +94,4 @@ class Permalink extends Module {
 
 		return $link;
 	}
-
 }

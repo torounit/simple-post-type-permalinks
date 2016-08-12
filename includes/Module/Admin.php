@@ -121,11 +121,11 @@ class Admin extends Module {
 					'%postname%' => 'sample-post',
 					'%post_id%'  => '123',
 					'%year%'     => date_i18n( 'Y' ),
-					'%monthnum%' => date_i18n( 'm'),
-					'%day%'      => date_i18n( 'd'),
-					'%hour%'     => date_i18n( 'H'),
-					'%minute%'   => date_i18n( 'i'),
-					'%second%'   => date_i18n( 's'),
+					'%monthnum%' => date_i18n( 'm' ),
+					'%day%'      => date_i18n( 'd' ),
+					'%hour%'     => date_i18n( 'H' ),
+					'%minute%'   => date_i18n( 'i' ),
+					'%second%'   => date_i18n( 's' ),
 					'%author%'   => 'jhon-doe',
 				);
 
@@ -171,7 +171,6 @@ class Admin extends Module {
 		<?php
 	}
 
-
 	/**
 	 * @param string $string
 	 *
@@ -191,7 +190,6 @@ class Admin extends Module {
 		return untrailingslashit( $front . esc_html( $string ) );
 	}
 
-
 	public function admin_enqueue_scripts( $hook ) {
 		if ( 'options-permalink.php' === $hook ) {
 			wp_enqueue_script(
@@ -203,5 +201,4 @@ class Admin extends Module {
 			);
 		}
 	}
-
 }

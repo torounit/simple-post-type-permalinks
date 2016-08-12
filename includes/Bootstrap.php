@@ -28,8 +28,6 @@ class Bootstrap {
 
 		$this->init();
 		$this->setup();
-
-
 	}
 
 	/**

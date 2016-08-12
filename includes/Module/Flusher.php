@@ -43,5 +43,4 @@ class Flusher extends Module {
 			update_option( 'sptp_queue_flush_rewrite_rules', 0 );
 		}
 	}
-
 }

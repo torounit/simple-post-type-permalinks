@@ -47,7 +47,6 @@ function sptp_init() {
 	} else {
 		add_action( 'admin_notices', 'sptp_admin_notices' );
 	}
-
 }
 
 /**
@@ -55,7 +54,7 @@ function sptp_init() {
  */
 function sptp_admin_notices() {
 	$message = sprintf(
-		__(  '[Simple Post Type Permalinks] Simple Post Type Permalinks requires PHP version %s or higher.', SPTP_TEXT_DOMAIN ),
+		__( '[Simple Post Type Permalinks] Simple Post Type Permalinks requires PHP version %s or higher.', SPTP_TEXT_DOMAIN ),
 		SPTP_REQUIRE_PHP_VERSION
 	);
 
