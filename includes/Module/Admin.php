@@ -42,7 +42,7 @@ class Admin extends Module {
 	public function setting_section() {
 		?>
 		<p><?php _e( 'Select permalink setting.' ); ?>
-			<?php _e( 'Available tags are only <code>%post_id%</code> and <code>%postname%</code>.' ); ?></p>
+			<?php _e( 'Available tags are <code>%post_id%</code>, <code>%postname%</code>, <code>%year%</code>, <code>%monthnum%</code>, <code>%day%</code>, <code>%hour%</code>, <code>%minute%</code>, <code>%second%</code>, <code>%author%</code>.' ); ?></p>
 
 		<?php
 

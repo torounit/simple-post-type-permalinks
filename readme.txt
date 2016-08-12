@@ -16,6 +16,8 @@ Edit the permalink structure of custom post type too easy.
 
 Simple Post Type Permalinks is Simple and Smart than [Custom Post Type Permalinks](https://wordpress.org/plugins/custom-post-type-permalinks/).
 
+Available tags are `%post_id%`, `%postname%`, `%year%`, `%monthnum%`, `%day%`, `%hour%`, `%minute%`, `%second%`, `%author%`.
+
 Requires PHP version 5.3 or higher.
 
 [This Plugin published on GitHub.](https://github.com/torounit/simple-post-type-permalinks)
