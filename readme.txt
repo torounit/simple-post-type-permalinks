@@ -4,7 +4,7 @@ Donate link:       http://www.amazon.co.jp/registry/wishlist/COKSXS25MVQV
 Tags:              permalink,permalinks,custom post type,cms
 Requires at least: 4.0
 Tested up to:      4.6
-Stable tag:        1.3.1
+Stable tag:        2.0.0
 License:           GPLv2 or Later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -73,6 +73,7 @@ register_post_type( 'foo',
 * Add abstract Module class.
 * Use autoloader.
 * Remove constructor injection and add setter injection for modules.
+* Support `%year%`, `%monthnum%`, `%day%`, `%hour%`, `%minute%`, `%second%`, `%author%`.
 
 = 1.3.1 =
 

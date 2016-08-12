@@ -76,6 +76,7 @@ register_post_type( 'foo',
 * Add abstract Module class.
 * Use autoloader.
 * Remove constructor injection and add setter injection for modules.
+* Support `%year%`, `%monthnum%`, `%day%`, `%hour%`, `%minute%`, `%second%`, `%author%`.
 
 ### 1.3.1
 
