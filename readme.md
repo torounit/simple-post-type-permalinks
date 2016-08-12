@@ -17,14 +17,15 @@ Easy to change Permalink of custom post type.
 
 Edit the permalink structure of custom post type too easy.
 
-Simple Post Type Permalinks is simpler than [Custom Post Type Permalinks](https://wordpress.org/plugins/custom-post-type-permalinks/).
+Simple Post Type Permalinks is Simple and Smart than [Custom Post Type Permalinks](https://wordpress.org/plugins/custom-post-type-permalinks/).
+
+Available tags are `%post_id%`, `%postname%`, `%year%`, `%monthnum%`, `%day%`, `%hour%`, `%minute%`, `%second%`, `%author%`.
 
 Requires PHP version 5.3 or higher.
 
 [This Plugin published on GitHub.](https://github.com/torounit/simple-post-type-permalinks)
 
 Please Fork and Pull Request!
-
 
 
 ## Installation
@@ -67,6 +68,14 @@ register_post_type( 'foo',
 * screenshot-1.png
 
 ## Changelog
+
+### 2.0.0
+
+* Change of class structure.
+* Change namespace.
+* Add abstract Module class.
+* Use autoloader.
+* Remove constructor injection and add setter injection for modules.
 
 ### 1.3.1
 
