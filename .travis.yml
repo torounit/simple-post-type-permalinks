@@ -7,7 +7,7 @@ notifications:
 
 php:
   - 5.3
-  - 7
+  - 7.1
 
 matrix:
   include:
@@ -35,8 +35,8 @@ env:
   matrix:
     - WP_VERSION=4.3.6 WP_MULTISITE=0
     - WP_VERSION=4.3.6 WP_MULTISITE=1
-    - WP_VERSION=4.6.1 WP_MULTISITE=0
-    - WP_VERSION=4.6.1 WP_MULTISITE=1
+    - WP_VERSION=4.8.1 WP_MULTISITE=0
+    - WP_VERSION=4.8.1 WP_MULTISITE=1
     - WP_VERSION=trunk WP_MULTISITE=0
     - WP_VERSION=trunk WP_MULTISITE=1
 
