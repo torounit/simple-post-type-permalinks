@@ -40,8 +40,8 @@ class Admin extends Module {
 
 	public function setting_section() {
 		?>
-		<p><?php _e( 'Select permalink setting.' ); ?>
-			<?php _e( 'Available tags are <code>%post_id%</code>, <code>%postname%</code>, <code>%year%</code>, <code>%monthnum%</code>, <code>%1$day%</code>, <code>%hour%</code>, <code>%minute%</code>, <code>%2$second%</code>, <code>%author%</code>.' ); ?></p>
+		<p><?php esc_html_e( 'Select permalink setting.' ); ?>
+			<?php echo wp_kses_post( 'Available tags are <code>%post_id%</code>, <code>%postname%</code>, <code>%year%</code>, <code>%monthnum%</code>, <code>%1$day%</code>, <code>%hour%</code>, <code>%minute%</code>, <code>%2$second%</code>, <code>%author%</code>.' ); ?></p>
 
 		<?php
 
@@ -139,7 +139,7 @@ class Admin extends Module {
 							disabled( $disabled );?> />
 					<?php
 					if ( $sample_setting ) :?>
-						<code><?php echo esc_html( home_url() ) . $this->create_permastruct( $permalink, $with_front ); ?><span
+						<code><?php echo esc_url( home_url()  . $this->create_permastruct( $permalink, $with_front ) ); ?><span
 								class="slash"><?php echo esc_attr( $slash ); ?></span></code>
 						<?php
 					else : ?>
@@ -156,7 +156,7 @@ class Admin extends Module {
 				<input type="radio" name="<?php echo esc_attr( $args ); ?>_select" value="custom"
 					<?php checked( $checked, false ); ?>
 					<?php disabled( $disabled ); ?> />
-				<code><?php echo esc_html( home_url() ) . $this->create_permastruct( '', $with_front ); ?></code>
+				<code><?php echo esc_url( home_url() . $this->create_permastruct( '', $with_front ) ); ?></code>
 
 				<input class="regular-text code"
 					   name="<?php echo esc_attr( "sptp_{$post_type}_structure" ); ?>"

@@ -58,7 +58,7 @@ function sptp_admin_notices() {
 		SPTP_REQUIRE_PHP_VERSION
 	);
 
-	echo sprintf( '<div class="error"><p>%s</p></div>', $message );
+	echo sprintf( '<div class="error"><p>%s</p></div>', esc_html( $message ) );
 }
 
 /**
