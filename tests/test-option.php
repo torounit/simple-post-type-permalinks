@@ -2,7 +2,7 @@
 
 class SPTP_Option_Test extends WP_UnitTestCase {
 
-	/** @var SPTP\Option */
+	/** @var SPTP\Module\Option */
 	private $option;
 
 	public function setUp() {
