@@ -6,7 +6,6 @@
  *
  * @package SPTP
  * @since   0.1.0
- *
  */
 
 namespace SPTP\Module;
@@ -42,7 +41,7 @@ class Admin extends Module {
 	public function setting_section() {
 		?>
 		<p><?php _e( 'Select permalink setting.' ); ?>
-			<?php _e( 'Available tags are <code>%post_id%</code>, <code>%postname%</code>, <code>%year%</code>, <code>%monthnum%</code>, <code>%day%</code>, <code>%hour%</code>, <code>%minute%</code>, <code>%second%</code>, <code>%author%</code>.' ); ?></p>
+			<?php _e( 'Available tags are <code>%post_id%</code>, <code>%postname%</code>, <code>%year%</code>, <code>%monthnum%</code>, <code>%1$day%</code>, <code>%hour%</code>, <code>%minute%</code>, <code>%2$second%</code>, <code>%author%</code>.' ); ?></p>
 
 		<?php
 
@@ -133,11 +132,11 @@ class Admin extends Module {
 				?>
 				<label>
 					<input type="radio" name="<?php echo esc_attr( $args ); ?>_select"
-					       value="<?php echo esc_attr( $sample_setting ) ?>" <?php
-						if ( ! $disabled ) {
-							checked( $permastruct, $sample_setting );
-						}
-						disabled( $disabled );?> />
+						   value="<?php echo esc_attr( $sample_setting ) ?>" <?php
+							if ( ! $disabled ) {
+								checked( $permastruct, $sample_setting );
+							}
+							disabled( $disabled );?> />
 					<?php
 					if ( $sample_setting ) :?>
 						<code><?php echo esc_html( home_url() ) . $this->create_permastruct( $permalink, $with_front ); ?><span
@@ -160,9 +159,9 @@ class Admin extends Module {
 				<code><?php echo esc_html( home_url() ) . $this->create_permastruct( '', $with_front ); ?></code>
 
 				<input class="regular-text code"
-				       name="<?php echo esc_attr( "sptp_{$post_type}_structure" ); ?>"
-				       id="<?php echo esc_attr( "sptp_{$post_type}_structure" ); ?>"
-				       type="text" value="/<?php echo esc_attr( $permastruct ) ?>"
+					   name="<?php echo esc_attr( "sptp_{$post_type}_structure" ); ?>"
+					   id="<?php echo esc_attr( "sptp_{$post_type}_structure" ); ?>"
+					   type="text" value="/<?php echo esc_attr( $permastruct ) ?>"
 					<?php disabled( $disabled ); ?>
 				/><span class="slash"><?php echo esc_html( $slash ); ?></span>
 			</label>
@@ -174,7 +173,7 @@ class Admin extends Module {
 	/**
 	 * @param string $string
 	 *
-	 * @param bool $with_front
+	 * @param bool   $with_front
 	 *
 	 * @return string
 	 */

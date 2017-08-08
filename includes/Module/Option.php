@@ -6,7 +6,6 @@
  *
  * @package SPTP
  * @since   0.1.0
- *
  */
 
 namespace SPTP\Module;
@@ -83,7 +82,6 @@ class Option extends Module {
 	/**
 	 *
 	 * Save Options.
-	 *
 	 */
 	public function save_options() {
 
@@ -125,7 +123,7 @@ class Option extends Module {
 				$new_options[ $key ] = trim( $new_options[ $key ], '/' );
 
 				unset( $new_options[ $select_key ] );
-				//If Empty set default.
+				// If Empty set default.
 				if ( empty( $new_options[ $key ] ) ) {
 					$new_options[ $select_key ] = false;
 				}
@@ -134,7 +132,7 @@ class Option extends Module {
 			$old_options = get_option( 'sptp_options', array() );
 			$options     = array_merge( $old_options, $new_options );
 			update_option( 'sptp_options', $options );
-		}
+		}// End if().
 	}
 
 

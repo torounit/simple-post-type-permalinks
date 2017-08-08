@@ -6,7 +6,6 @@
  *
  * @package SPTP
  * @since   0.1.0
- *
  */
 namespace SPTP;
 
@@ -33,7 +32,6 @@ class Bootstrap {
 	/**
 	 *
 	 * for activate and uninstall hooks.
-	 *
 	 */
 	private function setup() {
 		register_activation_hook( SPTP_FILE, array( $this, 'activation_action' ) );
@@ -50,7 +48,6 @@ class Bootstrap {
 	/**
 	 *
 	 * initialize.
-	 *
 	 */
 	public function init() {
 
@@ -61,7 +58,6 @@ class Bootstrap {
 	/**
 	 *
 	 * Load Plugin modules.
-	 *
 	 */
 	private function load_modules() {
 
@@ -139,7 +135,6 @@ class Bootstrap {
 	/**
 	 *
 	 * Delete SPTP options.
-	 *
 	 */
 	public static function uninstall() {
 		$sptp = new static();

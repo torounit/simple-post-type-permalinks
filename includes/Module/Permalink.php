@@ -6,7 +6,6 @@
  *
  * @package SPTP
  * @since   0.1.0
- *
  */
 
 namespace SPTP\Module;
@@ -25,7 +24,7 @@ class Permalink extends Module {
 	 *
 	 * Fix post_type permalink from postname to id.
 	 *
-	 * @param string $post_link The post's permalink.
+	 * @param string   $post_link The post's permalink.
 	 * @param \WP_Post $post The post in question.
 	 *
 	 * @return string

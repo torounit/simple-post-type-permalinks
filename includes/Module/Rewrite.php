@@ -6,7 +6,6 @@
  *
  * @package SPTP
  * @since   0.1.0
- *
  */
 
 namespace SPTP\Module;
@@ -85,7 +84,7 @@ class Rewrite extends Module {
 
 			$struct = str_replace( array( $post_type_slug, '%postname%' ), array( "%${post_type}_slug%", "%{$post_type}%" ), $struct );
 
-			//$rewrite_args['walk_dirs'] = false;
+			// $rewrite_args['walk_dirs'] = false;
 			add_permastruct( $post_type, $struct, $permastruct_args );
 
 			$slug = $this->option->get_front_struct( $post_type );
@@ -110,7 +109,6 @@ class Rewrite extends Module {
 	 *
 	 * Reset Permastructs.
 	 * for deactivation.
-	 *
 	 */
 	public function reset_rewrite_rules() {
 		array_walk( $this->queue, array( $this, 'reset_rewrite_rule' ) );
@@ -122,7 +120,6 @@ class Rewrite extends Module {
 	 * for deactivation.
 	 *
 	 * @param array $param
-	 *
 	 */
 	public function reset_rewrite_rule( $param ) {
 		$args      = $param['args'];

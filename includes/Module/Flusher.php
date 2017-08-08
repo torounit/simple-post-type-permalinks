@@ -26,7 +26,6 @@ class Flusher extends Module {
 	/**
 	 *
 	 * queue reset rewrite rules for next request.
-	 *
 	 */
 	private function queue_flush_rewrite_rules() {
 		update_option( 'sptp_queue_flush_rewrite_rules', 1 );
@@ -35,7 +34,6 @@ class Flusher extends Module {
 	/**
 	 *
 	 *  Re-Create Rewrite Rules.
-	 *
 	 */
 	public function flush_rewrite_rules() {
 		if ( get_option( 'sptp_queue_flush_rewrite_rules' ) ) {

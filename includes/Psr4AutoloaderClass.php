@@ -3,6 +3,7 @@ namespace SPTP;
 
 /**
  * Class Psr4AutoloaderClass
+ *
  * @package SPTP
  * @link http://www.php-fig.org/psr/psr-4/examples/
  */
@@ -30,9 +31,9 @@ class Psr4AutoloaderClass {
 	 * @param string $prefix The namespace prefix.
 	 * @param string $base_dir A base directory for class files in the
 	 * namespace.
-	 * @param bool $prepend If true, prepend the base directory to the stack
-	 * instead of appending it; this causes it to be searched first rather
-	 * than last.
+	 * @param bool   $prepend If true, prepend the base directory to the stack
+	 *   instead of appending it; this causes it to be searched first rather
+	 *   than last.
 	 *
 	 * @return void
 	 */
@@ -114,9 +115,7 @@ class Psr4AutoloaderClass {
 			// replace the namespace prefix with the base directory,
 			// replace namespace separators with directory separators
 			// in the relative class name, append with .php
-			$file = $base_dir
-			        . str_replace( '\\', '/', $relative_class )
-			        . '.php';
+			$file = $base_dir . str_replace( '\\', '/', $relative_class ) . '.php';
 
 			// if the mapped file exists, require it
 			if ( $this->requireFile( $file ) ) {
