@@ -85,17 +85,17 @@ class Option extends Module {
 	 */
 	public function save_options() {
 
-		if ( isset( $_POST['submit'] ) and isset( $_POST['_wp_http_referer'] ) ) {
+		if ( isset( $_POST['submit'] ) and filter_input( INPUT_POST, '_wp_http_referer' ) ) {
 
-			if ( empty( $_POST['_wpnonce'] ) ) {
+			if ( ! filter_input( INPUT_POST, '_wpnonce' ) ) {
 				return false;
 			}
 
-			if ( ! wp_verify_nonce( $_POST['_wpnonce'], 'update-permalink' ) ) {
+			if ( ! wp_verify_nonce( filter_input( INPUT_POST, '_wpnonce' ), 'update-permalink' ) ) {
 				return false;
 			}
 
-			if ( false === strpos( $_POST['_wp_http_referer'], 'options-permalink.php' ) ) {
+			if ( false === strpos( filter_input( INPUT_POST, '_wp_http_referer' ), 'options-permalink.php' ) ) {
 				return false;
 			}
 
