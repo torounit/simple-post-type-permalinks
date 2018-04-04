@@ -1,7 +1,7 @@
 <?php
 /**
  * @package SPTP
- * @version 2.0.0
+ * @version 2.0.1
  */
 /**
  * Plugin Name: Simple Post Type Permalinks
