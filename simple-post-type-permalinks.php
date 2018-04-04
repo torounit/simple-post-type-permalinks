@@ -7,9 +7,9 @@
  * Plugin Name: Simple Post Type Permalinks
  * Plugin URI:  https://github.com/torounit/simple-post-type-permalinks
  * Description: Easy to change Permalink of custom post type.
- * Version:     2.0.0
+ * Version:     2.0.1
  * Author:      Toro_Unit
- * Author URI:  http://www.torounit.com
+ * Author URI:  https://torounit.com
  * License:     GPLv2 or Later
  * Text Domain: simple-post-type-permalinks
  * Domain Path: /languages
