@@ -1,45 +1,60 @@
 language: php
 
+php:
+  - 7.1.9
+
+services:
+  - docker
+
+cache:
+  directories:
+    - vendor
+    - $HOME/.composer/cache
+
 notifications:
   email:
     on_success: never
     on_failure: change
 
-php:
-  - 5.3
-  - 7.2
-
 matrix:
   include:
-    - php: 5.3
-      env: WP_VERSION=latest WP_MULTISITE=0 WP_PULUGIN_DEPLOY=1
+    - env: PHP_VERSION=5.3 WP_VERSION=4.3.12
+    - env: PHP_VERSION=5.3 WP_VERSION=latest WP_PULUGIN_DEPLOY=1
+    - env: PHP_VERSION=5.3 WP_VERSION=trunk
+    - env: PHP_VERSION=7.1 WP_VERSION=4.3.12
+    - env: PHP_VERSION=7.1 WP_VERSION=latest
+    - env: PHP_VERSION=7.1 WP_VERSION=trunk
+
+  allow_failures:
+    - env: PHP_VERSION=5.3 WP_VERSION=trunk
+    - env: PHP_VERSION=7.1 WP_VERSION=trunk
+
 
 before_script:
   - composer install
-  - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - curl -L https://raw.githubusercontent.com/miya0001/wpenv/master/run.sh | bash -s $PHP_VERSION $WP_VERSION
+  - docker exec -u root wpenv ln -s /home/ubuntu/.phpenv/shims/php /usr/local/bin/
+  - docker exec -u root wpenv ln -s /home/ubuntu/.phpenv/shims/composer /usr/local/bin/
   - |
-    if [[ ${TRAVIS_PHP_VERSION:0:2} == "7." ]]; then
-      composer global require "phpunit/phpunit=5.7.*"
-    else
-      composer global require "phpunit/phpunit=4.8.*"
+    if [[ ! -z "$WP_VERSION" ]] ; then
+      docker exec wpenv composer global remove "phpunit/phpunit"
+      if [[ ${PHP_VERSION:0:2} == "5." ]]; then
+        docker exec wpenv composer global require "phpunit/phpunit=4.8.*"
+      else
+        docker exec wpenv composer global require "phpunit/phpunit=5.7.*"
+      fi
     fi
+  - |
+  - docker exec -u root wpenv ln -s /home/ubuntu/.phpenv/shims/phpunit /usr/local/bin/
 
 script:
-  - phpunit
-  - composer phpcs
+  - docker exec wpenv composer phpcs
+  - docker exec wpenv phpunit
+  - docker exec -e WP_MULTISITE=1 wpenv phpunit
 
 after_success: curl -L https://raw.githubusercontent.com/miya0001/travis2wpplugin/master/deploy.sh | bash
 
 env:
-  matrix:
-    - WP_VERSION=4.0.0 WP_MULTISITE=0
-    - WP_VERSION=4.0.0 WP_MULTISITE=1
-    - WP_VERSION=4.9.5 WP_MULTISITE=0
-    - WP_VERSION=4.9.5 WP_MULTISITE=1
-    - WP_VERSION=trunk WP_MULTISITE=0
-    - WP_VERSION=trunk WP_MULTISITE=1
-
   global:
     - SVN_REPO: https://plugins.svn.wordpress.org/simple-post-type-permalinks/
     - GH_REF: https://github.com/torounit/simple-post-type-permalinks.git
