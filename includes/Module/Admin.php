@@ -139,8 +139,14 @@ class Admin extends Module {
 							disabled( $disabled );?> />
 					<?php
 					if ( $sample_setting ) :?>
-						<code><?php echo esc_url( home_url()  . $this->create_permastruct( $permalink, $with_front ) ); ?><span
-								class="slash"><?php echo esc_attr( $slash ); ?></span></code>
+						<code>
+							<?php echo esc_url( home_url() ); ?>
+							<?php if ( $with_front ) : ?>
+								<span class="front"><?php echo esc_html( substr( $wp_rewrite->front, 0, - 1 ) ); ?></span>
+							<?php endif; ?>
+							<?php echo esc_html( $permalink ); ?>
+							<span class="slash"><?php echo esc_attr( $slash ); ?></span>
+						</code>
 						<?php
 					else : ?>
 						Default.
