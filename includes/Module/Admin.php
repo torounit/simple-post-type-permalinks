@@ -156,7 +156,7 @@ class Admin extends Module {
 				<input type="radio" name="<?php echo esc_attr( $args ); ?>_select" value="custom"
 					<?php checked( $checked, false ); ?>
 					<?php disabled( $disabled ); ?> />
-				<code><?php echo esc_url( home_url() . $this->create_permastruct( '', $with_front ) ); ?></code>
+				<code><?php echo wp_kses_post( home_url() . $this->create_permastruct( '', $with_front ) ); ?></code>
 
 				<input class="regular-text code"
 					   name="<?php echo esc_attr( "sptp_{$post_type}_structure" ); ?>"
