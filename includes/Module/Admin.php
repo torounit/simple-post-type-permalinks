@@ -139,14 +139,13 @@ class Admin extends Module {
 							disabled( $disabled );?> />
 					<?php
 					if ( $sample_setting ) :?>
-						<code>
-							<?php echo esc_url( home_url() ); ?>
-							<?php if ( $with_front ) : ?>
-								<span class="front"><?php echo esc_html( substr( $wp_rewrite->front, 0, - 1 ) ); ?></span>
-							<?php endif; ?>
-							<?php echo esc_html( $permalink ); ?>
-							<span class="slash"><?php echo esc_attr( $slash ); ?></span>
-						</code>
+						<code><?php echo esc_url( home_url() );
+							$front = substr( $wp_rewrite->front, 0, - 1 );
+							if ( $with_front && $front ) :
+								?><span class="front"><?php echo esc_html( $front ); ?></span><?php
+							endif;
+							echo esc_html( untrailingslashit( $permalink ) );
+						?><span class="slash"><?php echo esc_attr( $slash ); ?></span></code>
 						<?php
 					else : ?>
 						Default.
@@ -162,7 +161,13 @@ class Admin extends Module {
 				<input type="radio" name="<?php echo esc_attr( $args ); ?>_select" value="custom"
 					<?php checked( $checked, false ); ?>
 					<?php disabled( $disabled ); ?> />
-				<code><?php echo wp_kses_post( home_url() . $this->create_permastruct( '', $with_front ) ); ?></code>
+				<code><?php echo esc_url( home_url() );
+					$front = substr( $wp_rewrite->front, 0, - 1 );
+					if ( $with_front && $front ) :
+						?><span class="front"><?php echo esc_html( untrailingslashit( $front ) ); ?></span><?php
+						?><span class="slash"><?php echo esc_attr( $slash ); ?></span><?php
+					endif;
+				?></code>
 
 				<input class="regular-text code"
 					   name="<?php echo esc_attr( "sptp_{$post_type}_structure" ); ?>"
@@ -174,25 +179,6 @@ class Admin extends Module {
 
 		</fieldset>
 		<?php
-	}
-
-	/**
-	 * @param string $string
-	 *
-	 * @param bool   $with_front
-	 *
-	 * @return string
-	 */
-	private function create_permastruct( $string = '', $with_front = false ) {
-
-		/** @var \WP_Rewrite $wp_rewrite */
-		global $wp_rewrite;
-		$front = '';
-		if ( $with_front ) {
-			$front = '<span class="front">' . esc_html( substr( $wp_rewrite->front, 0, - 1 ) ) . '</span>';
-		}
-
-		return untrailingslashit( $front . esc_html( $string ) );
 	}
 
 	public function admin_enqueue_scripts( $hook ) {
