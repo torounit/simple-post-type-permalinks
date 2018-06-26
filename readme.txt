@@ -1,11 +1,11 @@
 === Simple Post Type Permalinks ===
-Contributors:      Toro_Unit
+Contributors:      Toro_Unit, inc2734
 Donate link:       http://www.amazon.co.jp/registry/wishlist/COKSXS25MVQV
 Tags:              permalink,permalinks,custom post type,cms
 Requires at least: 4.0
 Tested up to:      4.9
 Requires PHP:      5.3
-Stable tag:        2.0.1
+Stable tag:        2.0.2
 License:           GPLv2 or Later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
