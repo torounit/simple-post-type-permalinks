@@ -1,5 +1,7 @@
 {
-  "buildCommand": "bash ./bin/create-release.sh ${version}",
+  "scripts": {
+    "beforeStart": "bash ./bin/create-release.sh ${version}"
+  },
   "github": {
     "release": true
   },
