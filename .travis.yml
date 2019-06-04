@@ -56,6 +56,5 @@ env:
   global:
     - SVN_REPO: https://plugins.svn.wordpress.org/simple-post-type-permalinks/
     - GH_REF: https://github.com/torounit/simple-post-type-permalinks.git
-    - secure: "Q8L8SJFTv+RGTWRaUbhakzCByogcfweBPCYI+wTi6yNHu7tmlRe3yzs6KWuqFB0GhEQlk3t4eNd1XQP14HiK+Y85+XBoeRsm28yGUPK5COMvP3rHG7XyIuzwEqluQQ8NqeEb5W39p6OyEQQ15A/mkbx8CQFIZ1E/lLII68lg3Qc="
 
 
