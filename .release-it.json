@@ -1,11 +1,15 @@
 {
   "scripts": {
-    "beforeStart": "bash ./bin/create-release.sh ${version}"
+    "afterBump": "bash ./bin/create-release.sh ${version}",
+    "afterRelease": "echo Successfully released ${name} v${version} to ${repo.repository}."
   },
   "github": {
     "release": true
   },
   "npm": {
     "publish": false
+  },
+  "git": {
+    "requireCleanWorkingDir": false
   }
 }
