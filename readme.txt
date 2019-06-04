@@ -5,7 +5,7 @@ Tags:              permalink,permalinks,custom post type,cms
 Requires at least: 4.0
 Tested up to:      4.9
 Requires PHP:      5.3
-Stable tag:        2.0.2
+Stable tag:        2.0.3
 License:           GPLv2 or Later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
