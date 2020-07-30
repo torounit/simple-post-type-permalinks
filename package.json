@@ -1,0 +1,32 @@
+{
+  "name": "simple-post-type-permalinks",
+  "version": "2.0.5",
+  "description": "Easy to change Permalink of custom post type.",
+  "private": true,
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/torounit/simple-post-type-permalinks.git"
+  },
+  "author": "",
+  "license": "GPL-2.0+",
+  "bugs": {
+    "url": "https://github.com/torounit/simple-post-type-permalinks/issues"
+  },
+  "homepage": "https://github.com/torounit/simple-post-type-permalinks#readme",
+  "release-it": {
+    "hooks": {
+      "before:bump": "bash ./bin/create-release.sh simple-post-type-permalinks ${version}",
+      "after:bump": "bash ./bin/create-zip.sh simple-post-type-permalinks",
+      "after:release": "bash ./bin/cleanup.sh simple-post-type-permalinks"
+    },
+    "github": {
+      "release": true
+    },
+    "npm": {
+      "publish": false
+    }
+  }
+}
