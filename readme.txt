@@ -11,6 +11,8 @@ License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
 Easy to change Permalink of custom post type.
 
+
+
 == Description ==
 
 Edit the permalink structure of custom post type too easy.
@@ -47,18 +49,16 @@ Only `%post_id%` and `%postname%`.
 
 Example:
 
-`
-register_post_type( 'foo',
+<pre>register_post_type( 'foo',
 	array(
-		"public" => true,
+		'public' => true,
 		'has_archive' => true,
-		"rewrite" => [
-			"with_front" => true
+		'rewrite' => [
+			'with_front' => true
 		],
-		"sptp_permalink_structure" => "foo/%post_id%"
+		"sptp_permalink_structure" => 'foo/%post_id%'
 	)
-);
-`
+);</pre>
 
 
 == Screenshots ==
@@ -85,29 +85,36 @@ register_post_type( 'foo',
 * fix pagination link.
 
 = 1.2.0 =
+
 * fix textdomain.
 
 = 1.1.0 =
+
 * Test with WooCommerce and WPML.
 * Admin Bug Fix.
 * Support `get_post_type_archive`.
 
 
 = 1.0.3 =
+
 * Admin Bug Fix.
 
 = 1.0.2 =
+
 * Coding Standard Fix.
 
 = 1.0.0 =
+
 * Drop PHP 5.2.
 
 = 0.1.0 =
+
 * First release
 
 == Upgrade Notice ==
 
 = 1.0.0 =
+
 * Drop PHP 5.2.
 
 = 0.1.0 =

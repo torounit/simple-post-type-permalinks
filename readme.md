@@ -1,17 +1,24 @@
 # Simple Post Type Permalinks
+Contributors:      Toro_Unit, inc2734
 Donate link:       http://www.amazon.co.jp/registry/wishlist/COKSXS25MVQV
+Tags:              permalink,permalinks,custom post type,cms
+Requires at least: 4.0
+Tested up to:      5.2
+Requires PHP:      5.3
+Stable tag: 2.0.5
 License:           GPLv2 or Later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
 Easy to change Permalink of custom post type.
 
-
+<!-- only:github/ -->
 [![Build Status](https://travis-ci.org/torounit/simple-post-type-permalinks.svg)](https://travis-ci.org/torounit/simple-post-type-permalinks)
 [![](https://img.shields.io/wordpress/plugin/dt/simple-post-type-permalinks.svg)](https://wordpress.org/plugins/simple-post-type-permalinks/)
 [![](https://img.shields.io/wordpress/v/simple-post-type-permalinks.svg)](https://wordpress.org/plugins/simple-post-type-permalinks/)
 [![](https://img.shields.io/wordpress/plugin/r/simple-post-type-permalinks.svg)](https://wordpress.org/plugins/simple-post-type-permalinks/)
 
 [![](http://www.torounit.com/wp-content/uploads/2015/04/banner-1544x5001.png)](https://wordpress.org/plugins/simple-post-type-permalinks/)
+<!-- /only:github -->
 
 ## Description
 
@@ -49,18 +56,18 @@ Only `%post_id%` and `%postname%`.
 
 Example:
 
-`
+```
 register_post_type( 'foo',
 	array(
-		"public" => true,
+		'public' => true,
 		'has_archive' => true,
-		"rewrite" => [
-			"with_front" => true
+		'rewrite' => [
+			'with_front' => true
 		],
-		"sptp_permalink_structure" => "foo/%post_id%"
+		"sptp_permalink_structure" => 'foo/%post_id%'
 	)
 );
-`
+```
 
 
 ## Screenshots
@@ -68,6 +75,10 @@ register_post_type( 'foo',
 * screenshot-1.png
 
 ## Changelog
+
+### 2.0.1
+
+* Tested 4.9
 
 ### 2.0.0
 
