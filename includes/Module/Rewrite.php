@@ -80,9 +80,9 @@ class Rewrite extends Module {
 		if ( $struct = $this->option->get_structure( $post_type ) ) {
 
 			$post_type_slug = $this->option->get_front_struct( $post_type );
-			add_rewrite_tag( "%${post_type}_slug%", "(${post_type_slug})", "post_type=${post_type}&slug=" );
+			add_rewrite_tag( "%{$post_type}_slug%", "({$post_type_slug})", "post_type={$post_type}&slug=" );
 
-			$struct = str_replace( array( $post_type_slug, '%postname%' ), array( "%${post_type}_slug%", "%{$post_type}%" ), $struct );
+			$struct = str_replace( array( $post_type_slug, '%postname%' ), array( "%{$post_type}_slug%", "%{$post_type}%" ), $struct );
 
 			// $rewrite_args['walk_dirs'] = false;
 			add_permastruct( $post_type, $struct, $permastruct_args );

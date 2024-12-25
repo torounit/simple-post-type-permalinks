@@ -45,7 +45,7 @@ class Permalink extends Module {
 		$post_date = strtotime( $post->post_date );
 
 		$rewritecode    = array(
-			"%${post_type}_slug%",
+			"%{$post_type}_slug%",
 			'%post_id%',
 			'%year%',
 			'%monthnum%',
