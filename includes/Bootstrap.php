@@ -85,7 +85,7 @@ class Bootstrap {
 
 		$classes = array();
 		foreach ( $base_classes as $key => $class ) {
-			$classes[ $key ] = apply_filters( "sptp_module_${key}_class", $class::get_class() );
+			$classes[ $key ] = apply_filters( "sptp_module_{$key}_class", $class::get_class() );
 		}
 
 		return $classes;
@@ -99,7 +99,7 @@ class Bootstrap {
 		$modules = array();
 
 		foreach ( $classes as $key => $class ) {
-			$module          = apply_filters( "sptp_module_${key}", new $class(), $this );
+			$module          = apply_filters( "sptp_module_{$key}", new $class(), $this );
 			$modules[ $key ] = $module;
 		}
 
